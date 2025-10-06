@@ -44,42 +44,55 @@ class CustomTextField extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 8),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: controller,
-                initialValue: controller == null ? initialValue : null,
-                keyboardType: keyboardType,
-                obscureText: obscureText,
-                onChanged: onChanged,
-                validator: validator,
-                enabled: enabled,
-                maxLines: maxLines,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w500,
-                ),
-                decoration: InputDecoration(
-                  hintText: hintText,
-                  hintStyle: TextStyle(
-                    color: Colors.grey.shade400,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: controller,
+                  initialValue: controller == null ? initialValue : null,
+                  keyboardType: keyboardType,
+                  obscureText: obscureText,
+                  onChanged: onChanged,
+                  validator: validator,
+                  enabled: enabled,
+                  maxLines: maxLines,
+                  style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.normal,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.w500,
                   ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.zero,
-                  isDense: true,
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    hintStyle: TextStyle(
+                      color: Colors.grey.shade400,
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                    ),
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
+                  ),
                 ),
               ),
-            ),
-            if (suffix != null) suffix!,
-          ],
+              if (suffix != null) suffix!,
+            ],
+          ),
         ),
         const SizedBox(height: 8),
-        const Divider(thickness: 0.8, color: Color(0xFFE5E5E5)),
         if (trailing != null) trailing!,
       ],
     );

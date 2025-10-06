@@ -1,34 +1,106 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_back_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_text_field.dart';
+import 'package:laza/core/di.dart';
+import 'package:laza/core/routing/routes.dart';
 import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/features/auth/presentation/cubit/login_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/login_state.dart';
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<LoginCubit>(),
+      child: const _LoginScreenContent(),
+    );
+  }
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenContent extends StatefulWidget {
+  const _LoginScreenContent();
+
+  @override
+  State<_LoginScreenContent> createState() => _LoginScreenContentState();
+}
+
+class _LoginScreenContentState extends State<_LoginScreenContent> {
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool rememberMe = false;
 
   @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  void _handleLogin() {
+    final email = _emailController.text.trim();
+    final password = _passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter email and password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    context.read<LoginCubit>().loginUser(
+          email: email,
+          password: password,
+        );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
+    return BlocListener<LoginCubit, LoginState>(
+      listener: (context, state) {
+        if (state is LoginSuccess) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login successful!'),
+              backgroundColor: Colors.green,
+              duration: Duration(seconds: 1),
+            ),
+          );
+          // Navigate to home screen
+          context.go(AppRoutes.home);
+        } else if (state is LoginError) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.message),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      child: Scaffold(
+        backgroundColor: Colors.white,
 
-      // 💜 Bottom "Login" button
-      bottomNavigationBar: BottomActionButton(
-        text: "Login",
-        backgroundColor: AppColors.primaryColor,
-        textColor: Colors.white,
-        // todo login
-        onPressed: () {},
-      ),
+        // 💜 Bottom "Login" button
+        bottomNavigationBar: BlocBuilder<LoginCubit, LoginState>(
+          builder: (context, state) {
+            final isLoading = state is LoginLoading;
+            return BottomActionButton(
+              text: isLoading ? "Loading..." : "Login",
+              backgroundColor: AppColors.primaryColor,
+              textColor: Colors.white,
+              onPressed: isLoading ? () {} : _handleLogin,
+            );
+          },
+        ),
 
-      body: SafeArea(
+        body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
           child: Column(
@@ -67,11 +139,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 164),
 
-              // 👤 Username
-              const CustomTextField(
-                label: "Username",
-                // value: "Esther Howard",
-                suffix: Icon(Icons.check, color: Colors.green, size: 20),
+              // 👤 Email
+              CustomTextField(
+                label: "Email",
+                controller: _emailController,
+                keyboardType: TextInputType.emailAddress,
+                hintText: "Enter your email",
               ),
               const SizedBox(height: 20),
 
@@ -79,27 +152,27 @@ class _LoginScreenState extends State<LoginScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Expanded(
+                  Expanded(
                     child: CustomTextField(
                       label: "Password",
-                      // value: "HJ@#9783kja",
+                      controller: _passwordController,
+                      obscureText: true,
+                      hintText: "Enter your password",
                     ),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const [
-                      SizedBox(height: 5),
-                      Text(
-                        "Strong",
-                        style: TextStyle(color: Colors.green, fontSize: 13),
-                      ),
-                      SizedBox(height: 6),
-                      Text(
-                        "Forgot password?",
-                        style: TextStyle(
-                          color: Colors.red,
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w500,
+                    children: [
+                      const SizedBox(height: 30),
+                      GestureDetector(
+                        onTap: () => context.push(AppRoutes.forgetPassword),
+                        child: const Text(
+                          "Forgot password?",
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w500,
+                          ),
                         ),
                       ),
                     ],
@@ -125,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Switch(
                       value: rememberMe,
                       onChanged: (val) => setState(() => rememberMe = val),
-                      activeColor: Colors.white,
+                      activeThumbColor: Colors.white,
                       activeTrackColor: const Color(0xFF34C759),
                       inactiveThumbColor: Colors.white,
                       inactiveTrackColor: const Color(0xFFE5E5E5),
@@ -159,8 +232,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 20),
+
+              // 📝 Sign Up Link
+              Center(
+                child: GestureDetector(
+                  onTap: () => context.push(AppRoutes.signup),
+                  child: RichText(
+                    text: const TextSpan(
+                      text: "Don't have an account? ",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 15,
+                      ),
+                      children: [
+                        TextSpan(
+                          text: "Sign Up",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
               const SizedBox(height: 40),
-            ],
+              ],
+            ),
           ),
         ),
       ),

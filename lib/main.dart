@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:laza/core/di.dart';
 import 'package:laza/core/routing/app_router.dart';
 
 void main() {
+  setupDependencies();
   runApp(const LazaApp());
 }
 

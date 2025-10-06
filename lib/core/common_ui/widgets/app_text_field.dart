@@ -29,28 +29,41 @@ class AppTextField extends StatelessWidget {
         Text(label,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500)),
         const SizedBox(height: 6),
-        TextFormField(
-        validator: validator,
-          controller: controller,
-          onTapOutside: (event) {
-            FocusScope.of(context).unfocus();
-          },
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            
-            hintText: hintText,
-            suffixIcon: suffixIcon,
-            errorText: errorText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8),
-              borderSide: const BorderSide(color: Colors.blue, width: 1.5),
-            ),
-            contentPadding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 14,
+        Container(
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.08),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: TextFormField(
+          validator: validator,
+            controller: controller,
+            onTapOutside: (event) {
+              FocusScope.of(context).unfocus();
+            },
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              filled: true,
+              fillColor: Colors.white,
+              hintText: hintText,
+              suffixIcon: suffixIcon,
+              errorText: errorText,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: const BorderSide(color: Colors.blue, width: 1.5),
+              ),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 12,
+                vertical: 14,
+              ),
             ),
           ),
         ),
