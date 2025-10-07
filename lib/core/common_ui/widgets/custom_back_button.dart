@@ -27,7 +27,8 @@ class CustomBackButton extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       child: IconButton(
-        onPressed: onPressed ??
+        onPressed:
+            onPressed ??
             () {
               if (GoRouter.of(context).canPop()) {
                 GoRouter.of(context).pop();
