@@ -1,5 +1,6 @@
 // widgets/reviews_section.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ReviewsSection extends StatelessWidget {
   const ReviewsSection({super.key});
@@ -13,13 +14,22 @@ class ReviewsSection extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
-                'Reviews',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
               Text(
-                'View All',
-                style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                'Reviews',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  GoRouter.of(context).go('/reviews');
+                },
+                child: Text(
+                  'View All',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 15),
+                ),
               ),
             ],
           ),
@@ -58,12 +68,15 @@ class ReviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: isDark ? const Color(0xFF2A2A2A) : Colors.white,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
+        border: Border.all(
+          color: isDark ? Colors.grey[700]! : Colors.grey[200]!,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -89,18 +102,22 @@ class ReviewCard extends StatelessWidget {
                       children: [
                         Text(
                           name,
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                         Row(
                           children: [
                             Text(
                               rating.toString(),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
                               ),
                             ),
                             const SizedBox(width: 4),

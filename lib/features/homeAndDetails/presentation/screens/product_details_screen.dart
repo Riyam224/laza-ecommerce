@@ -1,5 +1,6 @@
 // screens/product_detail_screen.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
@@ -36,11 +37,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       bottomNavigationBar: BottomActionButton(
         text: 'Add to Cart',
         backgroundColor: AppColors.primaryColor,
-        onPressed: () {},
+        onPressed: () {
+          // todo add to cart
+          GoRouter.of(context).push('/cart');
+        },
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -71,13 +75,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         CustomIconWithBg(
                           iconImg: Assets.resourceImagesArrowLeft,
                           backgroundColor: Colors.white,
-                          onTap: () {},
+                          onTap: () {
+                            GoRouter.of(context).push('/home');
+                          },
                         ),
 
                         CustomIconWithBg(
                           iconImg: Assets.resourceImagesBag,
                           backgroundColor: Colors.white,
-                          onTap: () {},
+                          onTap: () {
+                            GoRouter.of(context).push('/cart');
+                          },
                         ),
                       ],
                     ),

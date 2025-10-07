@@ -18,7 +18,7 @@ class GenderButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 130,
+        width: 140,
         padding: const EdgeInsets.symmetric(vertical: 14),
         decoration: BoxDecoration(
           color: isSelected ? AppColors.primaryColor : Colors.grey[100],

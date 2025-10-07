@@ -4,10 +4,13 @@ import 'package:laza/features/auth/domain/entities/login_request_entity.dart';
 part 'login_request_model.g.dart';
 
 @JsonSerializable()
-class LoginRequestModel extends LoginRequestEntity {
+class LoginRequestModel {
+  final String email;
+  final String password;
+
   const LoginRequestModel({
-    required super.email,
-    required super.password,
+    required this.email,
+    required this.password,
   });
 
   Map<String, dynamic> toJson() => _$LoginRequestModelToJson(this);
@@ -16,6 +19,13 @@ class LoginRequestModel extends LoginRequestEntity {
     return LoginRequestModel(
       email: entity.email,
       password: entity.password,
+    );
+  }
+
+  LoginRequestEntity toEntity() {
+    return LoginRequestEntity(
+      email: email,
+      password: password,
     );
   }
 }

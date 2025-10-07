@@ -4,10 +4,13 @@ import 'package:laza/features/auth/domain/entities/verify_otp_request_entity.dar
 part 'verify_otp_request_model.g.dart';
 
 @JsonSerializable()
-class VerifyOtpRequestModel extends VerifyOtpRequestEntity {
+class VerifyOtpRequestModel {
+  final String email;
+  final String otp;
+
   const VerifyOtpRequestModel({
-    required super.email,
-    required super.otp,
+    required this.email,
+    required this.otp,
   });
 
   Map<String, dynamic> toJson() => _$VerifyOtpRequestModelToJson(this);
@@ -16,6 +19,13 @@ class VerifyOtpRequestModel extends VerifyOtpRequestEntity {
     return VerifyOtpRequestModel(
       email: entity.email,
       otp: entity.otp,
+    );
+  }
+
+  VerifyOtpRequestEntity toEntity() {
+    return VerifyOtpRequestEntity(
+      email: email,
+      otp: otp,
     );
   }
 }

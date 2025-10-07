@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
@@ -44,7 +45,9 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
                   CustomIconWithBg(
                     iconImg: Assets.resourceImagesArrowLeft,
                     backgroundColor: AppColors.iconsBg,
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      GoRouter.of(context).go('/payment');
+                    },
                   ),
                   const Text(
                     'Add New Card',
@@ -138,8 +141,10 @@ class _AddNewCardScreenState extends State<AddNewCardScreen> {
 
       // 🟣 Bottom Button
       bottomNavigationBar: BottomActionButton(
-        text: 'Add Card',
-        onPressed: () {},
+        text: 'save Card',
+        onPressed: () {
+          GoRouter.of(context).go('/orderConfirmed');
+        },
         backgroundColor: AppColors.primaryColor,
       ),
     );

@@ -6,15 +6,15 @@ class WelcomeSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.0),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             'Hello',
             style: TextStyle(
-              color: const Color(0xFF1D1E20),
+              color: Theme.of(context).textTheme.bodyLarge?.color,
               fontSize: 28,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w600,
@@ -22,18 +22,18 @@ class WelcomeSection extends StatelessWidget {
               letterSpacing: -0.21,
             ),
           ),
-          SizedBox(height: 5),
-          Text(
+          const SizedBox(height: 5),
+          const Text(
             'Welcome to Laza.',
             style: TextStyle(
-              color: const Color(0xFF8F959E),
+              color: Color(0xFF8F959E),
               fontSize: 15,
               fontFamily: 'Inter',
               fontWeight: FontWeight.w400,
               height: 1.10,
             ),
           ),
-          SizedBox(height: 24),
+          const SizedBox(height: 24),
         ],
       ),
     );

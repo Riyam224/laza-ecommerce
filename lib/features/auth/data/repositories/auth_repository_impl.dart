@@ -30,7 +30,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<LoginResponseEntity> login(LoginRequestEntity request) async {
     final requestModel = LoginRequestModel.fromEntity(request);
     final response = await api.login(requestModel);
-    return response;
+    return response.toEntity();
   }
 
   @override

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
@@ -64,7 +65,9 @@ class _CartScreenState extends State<CartScreen> {
                   CustomIconWithBg(
                     iconImg: Assets.resourceImagesArrowLeft,
                     backgroundColor: AppColors.iconsBg,
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
                   ),
                   // SizedBox(width: 85),
                   const Text(
@@ -329,7 +332,9 @@ class _CartScreenState extends State<CartScreen> {
       // 🟣 Checkout Button
       bottomNavigationBar: BottomActionButton(
         text: 'Checkout',
-        onPressed: () {},
+        onPressed: () {
+          GoRouter.of(context).go('/addNewCard');
+        },
         backgroundColor: AppColors.primaryColor,
       ),
     );

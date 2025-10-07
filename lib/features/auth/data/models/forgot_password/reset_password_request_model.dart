@@ -4,11 +4,15 @@ import 'package:laza/features/auth/domain/entities/reset_password_request_entity
 part 'reset_password_request_model.g.dart';
 
 @JsonSerializable()
-class ResetPasswordRequestModel extends ResetPasswordRequestEntity {
+class ResetPasswordRequestModel {
+  final String email;
+  final String otp;
+  final String newPassword;
+
   const ResetPasswordRequestModel({
-    required super.email,
-    required super.otp,
-    required super.newPassword,
+    required this.email,
+    required this.otp,
+    required this.newPassword,
   });
 
   Map<String, dynamic> toJson() => _$ResetPasswordRequestModelToJson(this);
@@ -19,6 +23,14 @@ class ResetPasswordRequestModel extends ResetPasswordRequestEntity {
       email: entity.email,
       otp: entity.otp,
       newPassword: entity.newPassword,
+    );
+  }
+
+  ResetPasswordRequestEntity toEntity() {
+    return ResetPasswordRequestEntity(
+      email: email,
+      otp: otp,
+      newPassword: newPassword,
     );
   }
 }

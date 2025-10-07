@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 
 class BottomNavWidget extends StatefulWidget {
@@ -14,7 +16,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).scaffoldBackgroundColor,
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.1),

@@ -33,9 +33,10 @@ class ProductInfo extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   name,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ],
@@ -51,9 +52,10 @@ class ProductInfo extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 '\$$price',
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
                 ),
               ),
             ],

@@ -24,9 +24,13 @@ class SizeSelector extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Size',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                ),
               ),
               Text(
                 'Size Guide',
@@ -35,35 +39,44 @@ class SizeSelector extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Row(
-            children: sizes.map((size) {
-              final isSelected = size == selectedSize;
-              return Expanded(
-                child: GestureDetector(
-                  onTap: () => onSizeSelected(size),
-                  child: Container(
-                    height: 56,
-                    margin: const EdgeInsets.only(right: 8),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? AppColors.primaryColor
-                          : const Color(0xFFF5F6FA),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: Text(
-                        size,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                          color: isSelected ? Colors.white : Colors.black,
+          Builder(
+            builder: (context) {
+              final isDark = Theme.of(context).brightness == Brightness.dark;
+              return Row(
+                children: sizes.map((size) {
+                  final isSelected = size == selectedSize;
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => onSizeSelected(size),
+                      child: Container(
+                        height: 56,
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? AppColors.primaryColor
+                              : isDark
+                                  ? const Color(0xFF2A2A2A)
+                                  : const Color(0xFFF5F6FA),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: Text(
+                            size,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: isSelected
+                                  ? Colors.white
+                                  : Theme.of(context).textTheme.bodyLarge?.color,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
+                  );
+                }).toList(),
               );
-            }).toList(),
+            },
           ),
         ],
       ),

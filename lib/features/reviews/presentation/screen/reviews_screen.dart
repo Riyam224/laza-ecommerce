@@ -23,7 +23,9 @@ class ReviewsScreen extends StatelessWidget {
                   CustomIconWithBg(
                     iconImg: Assets.resourceImagesArrowLeft,
                     backgroundColor: AppColors.iconsBg,
-                    onTap: () {},
+                    onTap: () {
+                      GoRouter.of(context).go('/productDetails');
+                    },
                   ),
                   SizedBox(width: 85),
                   Text(

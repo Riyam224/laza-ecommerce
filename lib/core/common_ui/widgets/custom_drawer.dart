@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
@@ -15,7 +15,7 @@ class CustomDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
@@ -27,7 +27,7 @@ class CustomDrawer extends StatelessWidget {
                 backgroundColor: AppColors.iconsBg,
                 onTap: () async {
                   Navigator.of(context).pop(); // ✅ close drawer
-                  await Future.delayed(const Duration(milliseconds: 200));
+                  await Future.delayed(const Duration(milliseconds: 150));
                 },
               ),
               const SizedBox(height: 30),
@@ -43,16 +43,17 @@ class CustomDrawer extends StatelessWidget {
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
+                      children: [
                         Text(
                           'Mrh Raju',
                           style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
-                        SizedBox(height: 4),
-                        Row(
+                        const SizedBox(height: 4),
+                        const Row(
                           children: [
                             Text(
                               'Verified Profile',
@@ -77,37 +78,18 @@ class CustomDrawer extends StatelessWidget {
                       color: const Color(0xFFF6F7FB),
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: const Text(
+                    child: Text(
                       '3 Orders',
                       style: TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                   ),
                 ],
               ),
-              const SizedBox(height: 30),
-
-              // 🌙 Dark mode toggle
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: const [
-                      Icon(Icons.light_mode_outlined),
-                      SizedBox(width: 12),
-                      Text('Dark Mode', style: TextStyle(fontSize: 16)),
-                    ],
-                  ),
-                  Switch(
-                    value: false,
-                    onChanged: (_) {},
-                    activeColor: AppColors.primaryColor,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 80),
 
               // 🧭 Menu Items with navigation
               _drawerItem(
@@ -181,8 +163,14 @@ class CustomDrawer extends StatelessWidget {
     Widget page,
   ) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black),
-      title: Text(title, style: const TextStyle(fontSize: 16)),
+      leading: Icon(icon, color: Theme.of(context).iconTheme.color),
+      title: Text(
+        title,
+        style: TextStyle(
+          fontSize: 16,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        ),
+      ),
       onTap: () async {
         Navigator.of(context).pop(); // ✅ Close drawer first
         await Future.delayed(const Duration(milliseconds: 200));

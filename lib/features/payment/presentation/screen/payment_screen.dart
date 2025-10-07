@@ -1,5 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
@@ -50,7 +53,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -64,11 +67,15 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   CustomIconWithBg(
                     iconImg: Assets.resourceImagesArrowLeft,
                     backgroundColor: AppColors.iconsBg,
-                    onTap: () => Navigator.pop(context),
+                    onTap: () => GoRouter.of(context).go('/orderConfirmed'),
                   ),
-                  const Text(
+                  Text(
                     'Payment',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
                   ),
                   const SizedBox(width: 45),
                 ],
@@ -193,7 +200,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   horizontal: 16,
                 ),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF9F5FF),
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? const Color(0xFF2A2A2A)
+                      : const Color(0xFFF9F5FF),
                   border: Border.all(color: AppColors.primaryColor, width: 1.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -260,9 +269,13 @@ class _PaymentScreenState extends State<PaymentScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
+                  Text(
                     'Save card info',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Theme.of(context).textTheme.bodyLarge?.color,
+                    ),
                   ),
                   Switch(
                     value: saveCard,
@@ -293,7 +306,11 @@ class _PaymentScreenState extends State<PaymentScreen> {
     padding: const EdgeInsets.only(bottom: 8),
     child: Text(
       text,
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w600,
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+      ),
     ),
   );
 
@@ -302,15 +319,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
     required String hint,
     TextInputType keyboardType = TextInputType.text,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return TextField(
       controller: controller,
       keyboardType: keyboardType,
-      style: const TextStyle(fontSize: 16, color: Colors.black),
+      style: TextStyle(
+        fontSize: 16,
+        color: Theme.of(context).textTheme.bodyLarge?.color,
+      ),
       decoration: InputDecoration(
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.grey),
         filled: true,
-        fillColor: const Color(0xFFF6F7FB),
+        fillColor: isDark ? const Color(0xFF2A2A2A) : const Color(0xFFF6F7FB),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16,
           vertical: 14,
