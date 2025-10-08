@@ -1,80 +1,228 @@
-# Laza - E-commerce Authentication App
+# Laza - E-commerce Application
 
-A Flutter e-commerce application implementing a complete authentication system with clean architecture principles.
+A complete Flutter e-commerce application implementing authentication, product browsing, shopping cart, reviews, and payment features with clean architecture principles.
 
-## Features
+## 📱 Features
 
+### Authentication
 - **User Registration** - Create new account with username, email, and password
 - **User Login** - Sign in with email and password
+- **Social Login Options** - Facebook, Twitter, and Google authentication UI
 - **Forgot Password Flow** - Complete password recovery system:
   - Email verification
   - 6-digit OTP validation
   - New password creation
-- **Navigation** - Seamless routing between authentication screens
-- **State Management** - BLoC/Cubit pattern for reactive UI
-- **Clean Architecture** - Separation of concerns across Domain, Data, and Presentation layers
+- **User Profile** - Get user information
 
-## Architecture
+### Home & Products
+- **Product Catalog** - Browse all available products with pagination
+- **Product Search** - Search products by name or keyword
+- **Product Details** - View detailed product information:
+  - Product images with carousel slider
+  - Price, description, and specifications
+  - Size selection
+  - Add to cart functionality
+- **Category Browsing** - Filter products by categories (Adidas, Nike, Fila, Puma, etc.)
+- **New Arrivals** - Display latest products
+- **Brand Section** - Browse products by popular brands
+
+### Reviews & Ratings
+- **View Reviews** - See all customer reviews for products
+- **Add Reviews** - Submit product reviews with ratings
+- **Review Statistics** - Average ratings and review counts
+
+### Shopping Cart
+- **Add to Cart** - Add products with selected size and quantity
+- **Cart Management** - View all cart items
+- **Update Quantity** - Increase/decrease item quantities
+- **Remove Items** - Delete items from cart
+- **Clear Cart** - Remove all items at once
+- **Price Calculation** - Automatic total price calculation
+
+### Payment & Checkout
+- **Payment Methods** - Support for multiple payment options:
+  - Credit/Debit cards (Visa, Mastercard)
+  - PayPal
+- **Add New Card** - Save payment card details
+- **Order Confirmation** - Order success screen
+
+### UI/UX Features
+- **Onboarding** - Welcome screen with gender selection
+- **Splash Screen** - App launch screen
+- **Bottom Navigation** - Easy navigation between main sections
+- **Custom Drawer** - Side menu for additional options
+- **Custom Widgets** - Reusable UI components:
+  - Custom text fields
+  - Elevated buttons
+  - Icon buttons with background
+  - Back button
+  - Search bar
+- **Smooth Transitions** - Animated route transitions
+- **Error Handling** - User-friendly error messages and retry options
+
+## 🏗️ Architecture
 
 This project follows **Clean Architecture** principles with three main layers:
 
-### 1. Domain Layer
+### 1. Domain Layer (Business Logic)
 - **Entities**: Pure Dart classes representing business models
 - **Repositories**: Abstract interfaces defining contracts
-- **Use Cases**: Business logic implementation
+- **Use Cases**: Business logic implementation (single responsibility)
 
-### 2. Data Layer
+### 2. Data Layer (Data Management)
 - **Models**: JSON-serializable data classes extending domain entities
-- **Data Sources**: API service implementations
+- **Data Sources**: API service implementations (Retrofit)
 - **Repository Implementations**: Concrete implementations of domain repositories
+- **Local Storage**: SharedPreferences for caching
 
-### 3. Presentation Layer
-- **Screens**: UI components
-- **Cubits**: State management logic
+### 3. Presentation Layer (UI)
+- **Screens**: UI components and layouts
+- **Cubits**: State management logic (BLoC pattern)
 - **States**: UI state definitions
+- **Widgets**: Reusable UI components
+
+### Project Structure
 
 ```
 lib/
 ├── core/
-│   ├── common_ui/         # Reusable widgets
-│   ├── constants/         # App constants
-│   ├── networking/        # API client setup
-│   ├── routing/          # Navigation configuration
+│   ├── common_ui/           # Reusable widgets
+│   │   └── widgets/
+│   │       ├── app_elevated_button.dart
+│   │       ├── app_text_field.dart
+│   │       ├── bottom_action_button.dart
+│   │       ├── bottom_navigation.dart
+│   │       ├── custom_back_button.dart
+│   │       ├── custom_drawer.dart
+│   │       ├── custom_icon_with_bg.dart
+│   │       └── custom_text_field.dart
+│   ├── constants/           # App constants and assets
+│   ├── error/              # Error handling
+│   ├── networking/         # API client setup
+│   │   ├── api_constants.dart
+│   │   ├── api_error_handler.dart
+│   │   └── dio_client.dart
+│   ├── routing/           # Navigation configuration
+│   │   ├── app_router.dart
+│   │   ├── routes.dart
+│   │   └── router_transitions.dart
 │   ├── theming/          # App theme
-│   └── di.dart           # Dependency injection
+│   │   ├── app_colors.dart
+│   │   └── app_themes.dart
+│   ├── utils/            # Utility classes
+│   ├── di.dart           # Dependency injection
+│   └── shared_prefs.dart # Shared preferences helper
 │
 └── features/
-    └── auth/
-        ├── domain/
-        │   ├── entities/
-        │   ├── repositories/
-        │   └── use_cases/
-        ├── data/
-        │   ├── models/
-        │   ├── data_sources/
-        │   └── repositories/
+    ├── auth/            # Authentication feature
+    │   ├── domain/
+    │   │   ├── entities/
+    │   │   ├── repositories/
+    │   │   └── use_cases/
+    │   ├── data/
+    │   │   ├── models/
+    │   │   ├── data_sources/
+    │   │   └── repositories/
+    │   └── presentation/
+    │       ├── screens/
+    │       │   ├── forgot_password_screen.dart
+    │       │   ├── login_options_screen.dart
+    │       │   ├── login_screen.dart
+    │       │   ├── new_password_screen.dart
+    │       │   ├── signup_screen.dart
+    │       │   └── verification_code_screen.dart
+    │       ├── cubit/
+    │       └── widgets/
+    │
+    ├── home/            # Products, Categories & Reviews
+    │   ├── domain/
+    │   ├── data/
+    │   └── presentation/
+    │       ├── screens/
+    │       │   ├── home_screen.dart
+    │       │   ├── product_details_screen.dart
+    │       │   ├── category_products_screen.dart
+    │       │   ├── reviews_screen.dart
+    │       │   └── add_review_screen.dart
+    │       ├── cubit/
+    │       │   ├── product_cubit/
+    │       │   ├── category_cubit/
+    │       │   ├── review_cubit/
+    │       │   └── category_products/
+    │       └── widgets/
+    │
+    ├── cart/            # Shopping cart feature
+    │   ├── domain/
+    │   ├── data/
+    │   │   ├── data_sources/
+    │   │   │   ├── cart_local_data_source.dart
+    │   │   │   ├── cart_remote_data_source.dart
+    │   │   │   └── cart_api_service.dart
+    │   │   ├── models/
+    │   │   └── repositories/
+    │   └── presentation/
+    │       ├── screens/
+    │       │   ├── cart_screen.dart
+    │       │   └── order_confirmed_screen.dart
+    │       └── cubit/
+    │
+    ├── payment/         # Payment feature
+    │   └── presentation/
+    │       └── screens/
+    │           ├── payment_screen.dart
+    │           └── add_new_card_screen.dart
+    │
+    ├── onboarding/      # Onboarding feature
+    │   └── presentation/
+    │       ├── screens/
+    │       └── widgets/
+    │
+    └── splash/          # Splash screen
         └── presentation/
-            ├── screens/
-            ├── cubit/
-            └── widgets/
+            └── screens/
 ```
 
-## Tech Stack
+## 🛠️ Tech Stack
 
+### Core Dependencies
 - **Flutter** - UI framework
-- **flutter_bloc** (^8.1.6) - State management using BLoC/Cubit pattern
-- **dio** (^5.7.0) - HTTP client for API calls
-- **retrofit** (^5.0.0) - Type-safe HTTP client
-- **json_annotation** (^4.9.0) - JSON serialization
-- **get_it** (^8.0.2) - Dependency injection
-- **go_router** (^14.6.2) - Declarative routing
-- **equatable** (^2.0.7) - Value equality
+- **Dart SDK** ^3.9.2
 
-## Setup Instructions
+### State Management
+- **flutter_bloc** (^9.1.1) - BLoC/Cubit pattern for state management
+- **provider** (^6.1.2) - Additional state management support
+
+### Networking
+- **dio** (^5.9.0) - HTTP client for API calls
+- **retrofit** (^4.7.3) - Type-safe HTTP client generator
+- **json_annotation** (^4.9.0) - JSON serialization annotations
+
+### Dependency Injection
+- **get_it** (^8.2.0) - Service locator for dependency injection
+
+### Navigation
+- **go_router** (^16.2.4) - Declarative routing solution
+
+### Data & Logic
+- **equatable** (^2.0.7) - Value equality for entities and states
+- **dartz** (^0.10.1) - Functional programming (Either for error handling)
+- **shared_preferences** (^2.5.3) - Local data persistence
+
+### UI Components
+- **carousel_slider** (^5.1.1) - Image carousel for product details
+- **flutter_svg** (^2.2.1) - SVG image support
+
+### Development Tools
+- **build_runner** (^2.9.0) - Code generation
+- **json_serializable** (^6.11.1) - JSON serialization code generation
+- **retrofit_generator** (^10.0.6) - Retrofit implementation generation
+- **flutter_lints** (^5.0.0) - Linting rules
+
+## 🚀 Setup Instructions
 
 ### Prerequisites
-- Flutter SDK (latest stable version)
-- Dart SDK
+- Flutter SDK (^3.9.2)
+- Dart SDK (^3.9.2)
 - Android Studio / VS Code
 - iOS simulator / Android emulator
 
@@ -83,7 +231,7 @@ lib/
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd laza
+cd laza-ecommerce
 ```
 
 2. Install dependencies:
@@ -91,7 +239,7 @@ cd laza
 flutter pub get
 ```
 
-3. Generate code for JSON serialization:
+3. Generate code for JSON serialization and Retrofit:
 ```bash
 dart run build_runner build --delete-conflicting-outputs
 ```
@@ -101,9 +249,9 @@ dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
-## API Configuration
+## 🌐 API Configuration
 
-The app connects to the following base URL:
+### Base URL
 ```dart
 https://accessories-eshop.runasp.net/api/
 ```
@@ -117,135 +265,72 @@ https://accessories-eshop.runasp.net/api/
 | POST | `/auth/forgot-password` | Send OTP to email |
 | POST | `/auth/validate-otp` | Verify OTP code |
 | POST | `/auth/reset-password` | Set new password |
+| GET | `/auth/user-info` | Get user information |
 
-### Request/Response Models
+### Product Endpoints
 
-#### Register
-**Request:**
-```json
-{
-  "username": "string",
-  "email": "string",
-  "password": "string"
-}
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/products` | Get all products (with pagination) |
+| GET | `/products/{id}` | Get product by ID |
+| GET | `/products/search?query={query}` | Search products |
+| GET | `/categories` | Get all categories |
+| GET | `/products/category/{categoryId}` | Get products by category |
 
-**Response:**
-```json
-{
-  "accessToken": "string",
-  "refreshToken": "string",
-  "expiresAtUtc": "string"
-}
-```
+### Review Endpoints
 
-#### Login
-**Request:**
-```json
-{
-  "email": "string",
-  "password": "string"
-}
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/products/{id}/reviews` | Get product reviews |
+| POST | `/reviews` | Add new review |
 
-**Response:**
-```json
-{
-  "accessToken": "string",
-  "refreshToken": "string",
-  "expiresAtUtc": "string"
-}
-```
+### Cart Endpoints
 
-#### Forgot Password
-**Request:**
-```json
-{
-  "email": "string"
-}
-```
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/cart` | Get cart items |
+| POST | `/cart/add` | Add item to cart |
+| PUT | `/cart/update` | Update cart item quantity |
+| DELETE | `/cart/remove/{id}` | Remove item from cart |
+| DELETE | `/cart/clear` | Clear all cart items |
 
-#### Verify OTP
-**Request:**
-```json
-{
-  "email": "string",
-  "otp": "string"
-}
-```
-
-#### Reset Password
-**Request:**
-```json
-{
-  "email": "string",
-  "otp": "string",
-  "newPassword": "string"
-}
-```
-
-## Authentication Flow
-
-### Login Flow
-1. User enters email and password
-2. `LoginCubit` validates and calls `LoginUseCase`
-3. `LoginUseCase` calls `AuthRepository.login()`
-4. `AuthRepositoryImpl` uses `AuthApiService` to make API call
-5. On success, navigate to home screen
-6. On error, display error message
-
-### Registration Flow
-1. User enters username, email, and password
-2. `RegisterCubit` validates and calls `RegisterUseCase`
-3. API returns authentication tokens
-4. Navigate to home screen
-
-### Forgot Password Flow
-1. **Email Entry** - User enters email address
-   - `ForgotPasswordCubit.sendOtp()` sends OTP to email
-   - Navigate to verification screen
-
-2. **OTP Verification** - User enters 6-digit code
-   - `ForgotPasswordCubit.verifyOtp()` validates code
-   - Navigate to new password screen
-
-3. **Password Reset** - User creates new password
-   - `ForgotPasswordCubit.resetPassword()` updates password
-   - Navigate to login screen
-
-## State Management
+## 🎯 State Management
 
 ### BLoC Pattern Implementation
 
-Each feature uses Cubit for state management:
+Each feature uses **Cubit** for state management following this pattern:
 
 ```dart
-// Define states
-sealed class LoginState extends Equatable {}
-class LoginInitial extends LoginState {}
-class LoginLoading extends LoginState {}
-class LoginSuccess extends LoginState {
-  final LoginResponseEntity response;
+// 1. Define states
+sealed class ProductState extends Equatable {}
+
+class ProductInitial extends ProductState {}
+
+class ProductLoading extends ProductState {}
+
+class ProductLoaded extends ProductState {
+  final List<ProductEntity> products;
+  ProductLoaded(this.products);
 }
-class LoginError extends LoginState {
+
+class ProductError extends ProductState {
   final String message;
+  ProductError(this.message);
 }
 
-// Implement Cubit
-class LoginCubit extends Cubit<LoginState> {
-  final LoginUseCase loginUseCase;
+// 2. Implement Cubit
+class ProductCubit extends Cubit<ProductState> {
+  final GetProductsUseCase getProductsUseCase;
 
-  Future<void> loginUser({
-    required String email,
-    required String password,
-  }) async {
-    emit(LoginLoading());
+  ProductCubit(this.getProductsUseCase) : super(ProductInitial());
+
+  Future<void> getProducts() async {
+    emit(ProductLoading());
     try {
-      final request = LoginRequestEntity(email: email, password: password);
-      final result = await loginUseCase(request);
-      emit(LoginSuccess(result));
+      final products = await getProductsUseCase();
+      emit(ProductLoaded(products));
     } catch (e) {
-      emit(LoginError(e.toString()));
+      emit(ProductError(e.toString()));
     }
   }
 }
@@ -255,112 +340,127 @@ class LoginCubit extends Cubit<LoginState> {
 
 ```dart
 BlocProvider(
-  create: (context) => sl<LoginCubit>(),
-  child: BlocListener<LoginCubit, LoginState>(
-    listener: (context, state) {
-      if (state is LoginSuccess) {
-        context.go(AppRoutes.home);
-      } else if (state is LoginError) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(state.message)),
-        );
+  create: (context) => sl<ProductCubit>()..getProducts(),
+  child: BlocBuilder<ProductCubit, ProductState>(
+    builder: (context, state) {
+      if (state is ProductLoading) {
+        return const CircularProgressIndicator();
       }
+      if (state is ProductLoaded) {
+        return ProductsList(products: state.products);
+      }
+      if (state is ProductError) {
+        return ErrorWidget(message: state.message);
+      }
+      return const SizedBox.shrink();
     },
-    child: BlocBuilder<LoginCubit, LoginState>(
-      builder: (context, state) {
-        final isLoading = state is LoginLoading;
-        return /* UI Widget */;
-      },
-    ),
   ),
 )
 ```
 
-## Dependency Injection
+## 🔧 Dependency Injection
 
-Using `get_it` for dependency injection:
+Using **get_it** for dependency injection with layered registration:
 
 ```dart
-// Register dependencies
-void _setupAuth() {
-  // API service
-  sl.registerLazySingleton<AuthApiService>(() => AuthApiService(sl()));
+// 1. Core dependencies
+await _setupCore();  // Dio, SharedPreferences
+
+// 2. Feature dependencies
+_setupAuth();        // Auth API, Repository, Use Cases, Cubits
+_setupProducts();    // Product API, Repository, Use Cases, Cubits
+_setupCart();        // Cart API, Repository, Use Cases, Cubits
+```
+
+### Registration Example
+
+```dart
+void _setupProducts() {
+  // Data Source
+  sl.registerLazySingleton<ProductRemoteDataSource>(
+    () => ProductRemoteDataSource(sl())
+  );
 
   // Repository
-  sl.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(sl()));
+  sl.registerLazySingleton<ProductRepository>(
+    () => ProductRepositoryImpl(sl())
+  );
 
   // Use Cases
-  sl.registerLazySingleton<LoginUseCase>(() => LoginUseCase(sl()));
-  sl.registerLazySingleton<RegisterUseCase>(() => RegisterUseCase(sl()));
-  sl.registerLazySingleton<ForgotPasswordUseCase>(() => ForgotPasswordUseCase(sl()));
-  sl.registerLazySingleton<VerifyOtpUseCase>(() => VerifyOtpUseCase(sl()));
-  sl.registerLazySingleton<ResetPasswordUseCase>(() => ResetPasswordUseCase(sl()));
+  sl.registerLazySingleton(() => GetProductsUseCase(sl()));
+  sl.registerLazySingleton(() => GetProductByIdUseCase(sl()));
 
   // Cubits (Factory for multiple instances)
-  sl.registerFactory<LoginCubit>(() => LoginCubit(sl()));
-  sl.registerFactory<RegisterCubit>(() => RegisterCubit(sl()));
-  sl.registerFactory<ForgotPasswordCubit>(() => ForgotPasswordCubit(sl(), sl(), sl()));
+  sl.registerFactory(() => ProductCubit(sl()));
 }
 ```
 
-## Navigation
+## 🧭 Navigation
 
-Using `go_router` for declarative routing:
+Using **go_router** for declarative routing:
 
 ```dart
 final router = GoRouter(
-  initialLocation: AppRoutes.onboarding,
+  initialLocation: AppRoutes.splash,
   routes: [
-    GoRoute(
-      path: AppRoutes.login,
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: AppRoutes.signup,
-      builder: (context, state) => const SignupScreen(),
-    ),
-    GoRoute(
-      path: AppRoutes.forgetPassword,
-      builder: (context, state) => const ForgotPasswordScreen(),
-    ),
-    GoRoute(
-      path: AppRoutes.verificationCode,
-      builder: (context, state) {
-        final email = state.uri.queryParameters['email'];
-        return VerificationCodeScreen(email: email);
-      },
-    ),
-    GoRoute(
-      path: AppRoutes.newPassword,
-      builder: (context, state) {
-        final email = state.uri.queryParameters['email'];
-        final otp = state.uri.queryParameters['otp'];
-        return NewPasswordScreen(email: email, otp: otp);
-      },
-    ),
+    GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashScreen()),
+    GoRoute(path: AppRoutes.onboarding, builder: (context, state) => const OnboardingScreen()),
+    GoRoute(path: AppRoutes.login, builder: (context, state) => const LoginScreen()),
+    GoRoute(path: AppRoutes.home, builder: (context, state) => const HomeScreen()),
+    GoRoute(path: AppRoutes.productDetails, builder: (context, state) => ProductDetailsScreen(productId: state.extra)),
+    GoRoute(path: AppRoutes.cart, builder: (context, state) => const CartScreen()),
+    // ... more routes
   ],
 );
 ```
 
-### Navigation Examples
+### Available Routes
 
-```dart
-// Push new screen
-context.push(AppRoutes.signup);
+- `/` - Root
+- `/splash` - Splash screen
+- `/onboarding` - Onboarding with gender selection
+- `/loginOptions` - Login options (social login)
+- `/login` - Login screen
+- `/signup` - Signup screen
+- `/forgetPassword` - Forgot password
+- `/verificationCode` - OTP verification
+- `/newPassword` - Reset password
+- `/home` - Home screen
+- `/productDetails` - Product details
+- `/reviews` - Product reviews
+- `/addReview` - Add review
+- `/cart` - Shopping cart
+- `/payment` - Payment methods
+- `/addNewCard` - Add payment card
+- `/orderConfirmed` - Order confirmation
+- `/categoryProducts` - Products by category
 
-// Replace current screen
-context.go(AppRoutes.home);
-
-// With query parameters
-context.push('${AppRoutes.verificationCode}?email=$email');
-```
-
-## Code Generation
+## 📦 Code Generation
 
 This project uses code generation for:
 
-1. **JSON Serialization** (`json_serializable`)
-2. **Retrofit API Service** (`retrofit_generator`)
+### 1. JSON Serialization (`json_serializable`)
+```dart
+@JsonSerializable()
+class ProductModel extends ProductEntity {
+  // ...
+  factory ProductModel.fromJson(Map<String, dynamic> json) =>
+    _$ProductModelFromJson(json);
+
+  Map<String, dynamic> toJson() => _$ProductModelToJson(this);
+}
+```
+
+### 2. Retrofit API Service (`retrofit_generator`)
+```dart
+@RestApi()
+abstract class ProductRemoteDataSource {
+  factory ProductRemoteDataSource(Dio dio) = _ProductRemoteDataSource;
+
+  @GET("products")
+  Future<List<ProductModel>> getProducts();
+}
+```
 
 ### Running Code Generation
 
@@ -370,140 +470,140 @@ dart run build_runner watch
 
 # One-time generation
 dart run build_runner build --delete-conflicting-outputs
+
+# Clean and regenerate
+flutter clean
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
 ```
 
-### Generated Files
-- `*.g.dart` - JSON serialization code
-- `*_api_service.g.dart` - Retrofit implementation
+## 🎨 Theming & UI
 
-## Project Patterns
+### Color Palette
+- Primary colors defined in [app_colors.dart](lib/core/theming/app_colors.dart)
+- Theme configuration in [app_themes.dart](lib/core/theming/app_themes.dart)
+
+### Reusable Widgets
+- **AppElevatedButton** - Customizable elevated button
+- **AppTextField** / **CustomTextField** - Form input fields
+- **BottomNavWidget** - Bottom navigation bar
+- **CustomDrawer** - Side navigation drawer
+- **CustomBackButton** - Consistent back button
+- **CustomIconWithBg** - Icon with background container
+- **BottomActionButton** - Fixed bottom action button
+
+### Assets
+Images stored in `assets/images/`:
+- Brand logos (Nike, Adidas, Fila, Puma)
+- Social media icons (Facebook, Google, Twitter)
+- UI icons (cart, search, heart, location, etc.)
+- Payment icons (Visa, Mastercard, PayPal)
+- Illustrations (onboarding, order confirmation, etc.)
+
+## 🔐 Authentication Flow
+
+### Login Flow
+1. User enters email and password
+2. `LoginCubit` validates input
+3. `LoginUseCase` calls `AuthRepository.login()`
+4. `AuthRepositoryImpl` uses `AuthApiService` to make API call
+5. On success: Store tokens → Navigate to home
+6. On error: Display error message
+
+### Registration Flow
+1. User enters username, email, password
+2. `RegisterCubit` validates input
+3. `RegisterUseCase` calls repository
+4. API returns authentication tokens
+5. Store tokens → Navigate to home
+
+### Forgot Password Flow
+1. **Email Entry** → Send OTP
+2. **OTP Verification** → Validate code
+3. **Password Reset** → Update password → Navigate to login
+
+## 🛍️ Shopping Flow
+
+### Browse & Add to Cart
+1. Browse products on home screen
+2. View product details with images
+3. Select size and quantity
+4. Add to cart (local or API)
+5. Continue shopping or go to cart
+
+### Checkout Process
+1. Review cart items
+2. Update quantities or remove items
+3. Proceed to payment
+4. Select payment method
+5. Confirm order
+6. View order confirmation
+
+## 📊 Data Models
 
 ### Entity-Model Pattern
 
 **Domain Entity** (Pure Dart):
 ```dart
-class LoginRequestEntity extends Equatable {
-  final String email;
-  final String password;
+class ProductEntity extends Equatable {
+  final String id;
+  final String name;
+  final double price;
+  final String description;
 
-  const LoginRequestEntity({
-    required this.email,
-    required this.password,
+  const ProductEntity({
+    required this.id,
+    required this.name,
+    required this.price,
+    required this.description,
   });
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [id, name, price, description];
 }
 ```
 
 **Data Model** (Extends Entity + JSON):
 ```dart
 @JsonSerializable()
-class LoginRequestModel extends LoginRequestEntity {
-  const LoginRequestModel({
-    required super.email,
-    required super.password,
+class ProductModel extends ProductEntity {
+  const ProductModel({
+    required super.id,
+    required super.name,
+    required super.price,
+    required super.description,
   });
 
-  Map<String, dynamic> toJson() => _$LoginRequestModelToJson(this);
+  factory ProductModel.fromJson(Map<String, dynamic> json) =>
+    _$ProductModelFromJson(json);
 
-  factory LoginRequestModel.fromEntity(LoginRequestEntity entity) {
-    return LoginRequestModel(
-      email: entity.email,
-      password: entity.password,
-    );
-  }
+  Map<String, dynamic> toJson() => _$ProductModelToJson(this);
 }
 ```
 
-### Use Case Pattern
+## 🧪 Error Handling
 
+### API Error Handling
+- Centralized error handling in [api_error_handler.dart](lib/core/networking/api_error_handler.dart)
+- User-friendly error messages in [error_messages.dart](lib/core/utils/error_messages.dart)
+- Retry mechanisms for failed requests
+
+### State-based Error Handling
 ```dart
-class LoginUseCase {
-  final AuthRepository repository;
-
-  LoginUseCase(this.repository);
-
-  Future<LoginResponseEntity> call(LoginRequestEntity request) async {
-    return await repository.login(request);
-  }
+if (state is ProductError) {
+  return Column(
+    children: [
+      Text(state.message, style: TextStyle(color: Colors.red)),
+      ElevatedButton(
+        onPressed: () => context.read<ProductCubit>().getProducts(),
+        child: const Text('Retry'),
+      ),
+    ],
+  );
 }
 ```
 
-## Common Issues & Troubleshooting
-
-### Issue: "Email not found" error
-
-**Cause**: API endpoint path duplication (base URL already includes `/api/`)
-
-**Solution**: Ensure endpoints don't duplicate the prefix:
-```dart
-// ❌ Wrong
-@POST("api/auth/login")
-
-// ✓ Correct
-@POST("auth/login")
-```
-
-### Issue: Build runner fails
-
-**Solution**: Clean and regenerate:
-```bash
-flutter clean
-flutter pub get
-dart run build_runner build --delete-conflicting-outputs
-```
-
-### Issue: Dependency injection error
-
-**Solution**: Ensure dependencies are registered in correct order in `di.dart`:
-1. Core dependencies (Dio)
-2. API services
-3. Repositories
-4. Use cases
-5. Cubits
-
-## Additional Documentation
-
-- [Login Architecture](lib/features/auth/LOGIN_ARCHITECTURE.md) - Detailed login implementation
-- [Forgot Password Architecture](lib/features/auth/FORGOT_PASSWORD_ARCHITECTURE.md) - Password recovery flow
-- [Troubleshooting Guide](TROUBLESHOOTING_FORGOT_PASSWORD.md) - Common issues and solutions
-
-## Development Guidelines
-
-### Adding a New Feature
-
-1. **Create Domain Layer**
-   - Define entities in `domain/entities/`
-   - Create repository interface in `domain/repositories/`
-   - Implement use case in `domain/use_cases/`
-
-2. **Create Data Layer**
-   - Create models extending entities in `data/models/`
-   - Add API methods in `data/data_sources/`
-   - Implement repository in `data/repositories/`
-   - Run code generation
-
-3. **Create Presentation Layer**
-   - Define states in `presentation/cubit/`
-   - Implement cubit in `presentation/cubit/`
-   - Create UI screens in `presentation/screens/`
-
-4. **Register Dependencies**
-   - Add to `core/di.dart`
-
-5. **Add Routes**
-   - Update `core/routing/app_router.dart`
-
-### Code Style
-
-- Use `const` constructors where possible
-- Follow Flutter naming conventions
-- Keep functions small and focused
-- Add comments for complex logic
-- Use meaningful variable names
-
-## Testing
+## 🧪 Testing
 
 ```bash
 # Run all tests
@@ -516,19 +616,155 @@ flutter test test/features/auth/login_test.dart
 flutter test --coverage
 ```
 
-## Building for Production
+## 🏗️ Building for Production
 
 ### Android
 ```bash
+# Debug APK
+flutter build apk --debug
+
+# Release APK
 flutter build apk --release
+
+# App Bundle (for Play Store)
+flutter build appbundle --release
 ```
 
 ### iOS
 ```bash
+# Debug
+flutter build ios --debug
+
+# Release
 flutter build ipa --release
 ```
 
-## Contributing
+## 📝 Development Guidelines
+
+### Adding a New Feature
+
+1. **Create Domain Layer**
+   - Define entities in `domain/entities/`
+   - Create repository interface in `domain/repositories/`
+   - Implement use cases in `domain/use_cases/`
+
+2. **Create Data Layer**
+   - Create models extending entities in `data/models/`
+   - Add API methods in `data/data_sources/`
+   - Implement repository in `data/repositories/`
+   - Run code generation
+
+3. **Create Presentation Layer**
+   - Define states in `presentation/cubit/`
+   - Implement cubit logic
+   - Create UI screens in `presentation/screens/`
+   - Build reusable widgets in `presentation/widgets/`
+
+4. **Register Dependencies**
+   - Add to [core/di.dart](lib/core/di.dart)
+
+5. **Add Routes**
+   - Update [core/routing/routes.dart](lib/core/routing/routes.dart)
+   - Update [core/routing/app_router.dart](lib/core/routing/app_router.dart)
+
+### Code Style
+
+- Use `const` constructors where possible
+- Follow Flutter naming conventions (camelCase for variables, PascalCase for classes)
+- Keep functions small and focused (single responsibility)
+- Add comments for complex logic
+- Use meaningful variable names
+- Prefer composition over inheritance
+- Use `Equatable` for value equality in entities and states
+
+## ❓ Common Issues & Troubleshooting
+
+### Issue: "Email not found" error
+
+**Cause**: API endpoint path duplication
+
+**Solution**: Ensure endpoints don't duplicate the base URL prefix:
+```dart
+// ❌ Wrong
+@POST("api/auth/login")
+
+// ✅ Correct
+@POST("auth/login")
+```
+
+### Issue: Build runner fails
+
+**Solution**:
+```bash
+flutter clean
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+```
+
+### Issue: Dependency injection error
+
+**Solution**: Ensure dependencies are registered in correct order:
+1. Core (Dio, SharedPreferences)
+2. API services
+3. Repositories
+4. Use cases
+5. Cubits
+
+### Issue: Navigation not working
+
+**Solution**:
+- Check route names in [routes.dart](lib/core/routing/routes.dart)
+- Ensure routes are registered in [app_router.dart](lib/core/routing/app_router.dart)
+- Use `context.go()` for replacement, `context.push()` for stacking
+
+## 📚 Project Patterns & Best Practices
+
+### Use Case Pattern
+```dart
+class GetProductsUseCase {
+  final ProductRepository repository;
+
+  GetProductsUseCase(this.repository);
+
+  Future<List<ProductEntity>> call() async {
+    return await repository.getProducts();
+  }
+}
+```
+
+### Repository Pattern
+```dart
+// Domain (Abstract)
+abstract class ProductRepository {
+  Future<List<ProductEntity>> getProducts();
+}
+
+// Data (Concrete)
+class ProductRepositoryImpl implements ProductRepository {
+  final ProductRemoteDataSource remoteDataSource;
+
+  ProductRepositoryImpl(this.remoteDataSource);
+
+  @override
+  Future<List<ProductEntity>> getProducts() async {
+    return await remoteDataSource.getProducts();
+  }
+}
+```
+
+### Either Pattern (Error Handling with Dartz)
+```dart
+Future<Either<Failure, ProductEntity>> getProduct(String id) async {
+  try {
+    final product = await remoteDataSource.getProduct(id);
+    return Right(product);
+  } catch (e) {
+    return Left(ServerFailure(e.toString()));
+  }
+}
+```
+
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -536,14 +772,14 @@ flutter build ipa --release
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## License
+## 📄 License
 
 This project is part of the Flutter Mentorship program.
 
-## Contact
+## 📧 Contact
 
 For questions or issues, please open an issue in the repository.
 
 ---
 
-Built with ❤️ using Flutter and Clean Architecture
+**Built with ❤️ using Flutter and Clean Architecture**
