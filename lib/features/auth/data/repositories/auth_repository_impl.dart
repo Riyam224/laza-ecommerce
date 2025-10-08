@@ -16,6 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthApiService api;
   AuthRepositoryImpl(this.api);
 
+// todo auth  ________________
   @override
   Future<RegisterResponseEntity> register(RegisterRequestModel request) async {
     final response = await api.register(request);
@@ -26,7 +27,7 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
-  // todo ______________
+  // todo ______________ save token 
 
   @override
   Future<LoginResponseEntity> login(LoginRequestEntity request) async {

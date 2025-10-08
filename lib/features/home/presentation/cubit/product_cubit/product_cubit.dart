@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/domain/use_cases/get_products_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/get_product_by_id_usecase.dart';
 import 'product_state.dart';
@@ -8,6 +9,7 @@ import 'product_state.dart';
 class ProductCubit extends Cubit<ProductState> {
   final GetProductsUseCase getProductsUseCase;
   final GetProductByIdUseCase getProductByIdUseCase;
+  List<ProductEntity>? _allProducts;
 
   ProductCubit({
     required this.getProductsUseCase,
@@ -19,6 +21,7 @@ class ProductCubit extends Cubit<ProductState> {
     emit(ProductLoading());
     try {
       final products = await getProductsUseCase();
+      _allProducts = products;
       emit(ProductLoaded(products));
     } on DioException catch (e) {
       final errorMessage = _handleDioError(e);
@@ -26,6 +29,27 @@ class ProductCubit extends Cubit<ProductState> {
     } catch (e) {
       emit(ProductError(ErrorMessages.getErrorMessage(e)));
     }
+  }
+
+  // 🔍 Search products locally
+  void searchProducts(String query) {
+    if (_allProducts == null) {
+      return;
+    }
+
+    if (query.isEmpty) {
+      emit(ProductLoaded(_allProducts!));
+      return;
+    }
+
+    final filteredProducts = _allProducts!.where((product) {
+      final nameLower = product.name.toLowerCase();
+      final descriptionLower = product.description.toLowerCase();
+      final queryLower = query.toLowerCase();
+      return nameLower.contains(queryLower) || descriptionLower.contains(queryLower);
+    }).toList();
+
+    emit(ProductSearchLoaded(filteredProducts, query));
   }
 
   // 🟢 Fetch product by ID

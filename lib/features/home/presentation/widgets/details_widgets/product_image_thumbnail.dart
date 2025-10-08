@@ -1,6 +1,5 @@
-
-// widgets/image_thumbnails.dart
 import 'package:flutter/material.dart';
+import 'package:laza/core/theming/app_colors.dart';
 
 class ImageThumbnails extends StatelessWidget {
   final List<String> images;
@@ -31,20 +30,25 @@ class ImageThumbnails extends StatelessWidget {
                 width: 100,
                 margin: const EdgeInsets.only(right: 12),
                 decoration: BoxDecoration(
-                  color: isSelected
-                      ? const Color(0xFFD4F5E9)
-                      : const Color(0xFFF5F6FA),
+                  color: const Color(0xFFF5F6FA),
                   borderRadius: BorderRadius.circular(16),
-                  border: isSelected
-                      ? Border.all(color: const Color(0xFF7FD8BE), width: 2)
-                      : null,
+                  border: Border.all(
+                    color: isSelected
+                        ? AppColors.primaryColor
+                        : Colors.transparent,
+                    width: 2,
+                  ),
                 ),
-                child: Center(
-                  // Replace with Image.asset(images[index])
-                  child: Icon(
-                    Icons.checkroom,
-                    size: 50,
-                    color: Colors.grey[600],
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.network(
+                    images[index],
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Icon(
+                      Icons.broken_image,
+                      color: Colors.grey[400],
+                      size: 50,
+                    ),
                   ),
                 ),
               ),

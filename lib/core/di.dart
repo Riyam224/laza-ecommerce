@@ -19,16 +19,20 @@ import 'package:laza/features/auth/presentation/cubit/register_cubit.dart';
 import 'package:laza/features/auth/presentation/cubit/login_cubit.dart';
 import 'package:laza/features/auth/presentation/cubit/forgot_password_cubit.dart';
 
-// 🛍️ Product + Review Feature
+// 🛍️ Product + Review + Category Feature
 import 'package:laza/features/home/domain/use_cases/get_product_by_id_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/get_products_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/get_reviews_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/add_review_usecase.dart';
+import 'package:laza/features/home/domain/use_cases/get_categories_usecase.dart';
+import 'package:laza/features/home/domain/use_cases/get_products_by_category_usecase.dart';
 import 'package:laza/features/home/domain/repositories/product_repository.dart';
 import 'package:laza/features/home/data/repositories/product_repository_impl.dart';
 import 'package:laza/features/home/data/data_sources/product_remote_data_source.dart';
 import 'package:laza/features/home/presentation/cubit/product_cubit/product_cubit.dart';
 import 'package:laza/features/home/presentation/cubit/review_cubit/review_cubit.dart';
+import 'package:laza/features/home/presentation/cubit/category_cubit/category_cubit.dart';
+import 'package:laza/features/home/presentation/cubit/category_products/category_products_cubit.dart';
 
 final sl = GetIt.instance;
 
@@ -79,6 +83,8 @@ void _setupProducts() {
   sl.registerLazySingleton(() => GetProductByIdUseCase(sl()));
   sl.registerLazySingleton(() => GetReviewsUseCase(sl()));
   sl.registerLazySingleton(() => AddReviewUseCase(sl()));
+  sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => GetProductsByCategoryUseCase(sl()));
 
   // ✅ 9. Cubits
   sl.registerFactory(
@@ -92,5 +98,13 @@ void _setupProducts() {
       getReviewsUseCase: sl(),
       addReviewUseCase: sl(),
     ),
+  );
+  sl.registerFactory(
+    () => CategoryCubit(
+      getCategoriesUseCase: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => CategoryProductsCubit(sl()),
   );
 }

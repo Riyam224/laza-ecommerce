@@ -37,3 +37,12 @@ class ProductError extends ProductState {
   @override
   List<Object?> get props => [message];
 }
+
+class ProductSearchLoaded extends ProductState {
+  final List<ProductEntity> products;
+  final String query;
+  const ProductSearchLoaded(this.products, this.query);
+
+  @override
+  List<Object?> get props => [products, query];
+}

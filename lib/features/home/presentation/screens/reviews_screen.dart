@@ -103,9 +103,10 @@ class ReviewsScreen extends StatelessWidget {
                         // 🧡 Add Review button
                         ElevatedButton.icon(
                           onPressed: () {
-                            GoRouter.of(
-                              context,
-                            ).push('/addReview', extra: productId ?? '1');
+                            GoRouter.of(context).push(
+                              '/addReview',
+                              extra: productId, // if you pass a product ID
+                            );
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(
@@ -197,7 +198,7 @@ class ReviewsScreen extends StatelessWidget {
                               id: review.id,
                               name: review.userName,
                               date: review.date ?? 'Recent',
-                              rating: review.rating,
+                              rating: review.rating.toDouble(),
                               review: review.comment,
                               userPicture: review.userPicture,
                             ),

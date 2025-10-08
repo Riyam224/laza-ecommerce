@@ -157,7 +157,7 @@ class ReviewCard extends StatelessWidget {
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          date ?? "Recent",
+                          date,
                           style: const TextStyle(
                             color: Colors.grey,
                             fontSize: 13,
@@ -225,7 +225,7 @@ class ReviewsSection extends StatelessWidget {
                             id: r.id,
                             name: r.userName,
                             date: r.date ?? "Recent",
-                            rating: r.rating,
+                            rating: r.rating.toDouble(),
                             review: r.comment,
                             userPicture: r.userPicture,
                           ),

@@ -67,6 +67,15 @@ class HomeScreen extends StatelessWidget {
                       );
                     }
 
+                    if (state is ProductSearchLoaded) {
+                      return ProductsSection(
+                        title: state.products.isEmpty
+                            ? 'No results found'
+                            : 'Search Results',
+                        products: state.products,
+                      );
+                    }
+
                     if (state is ProductLoaded) {
                       return ProductsSection(
                         title: 'New Arrival',

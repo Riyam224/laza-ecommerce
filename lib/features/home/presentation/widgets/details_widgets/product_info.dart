@@ -1,6 +1,6 @@
-
 // widgets/product_info.dart
 import 'package:flutter/material.dart';
+import 'package:laza/core/theming/app_colors.dart';
 
 class ProductInfo extends StatelessWidget {
   final String category;
@@ -34,7 +34,7 @@ class ProductInfo extends StatelessWidget {
                 Text(
                   name,
                   style: TextStyle(
-                    fontSize: 24,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
@@ -53,9 +53,9 @@ class ProductInfo extends StatelessWidget {
               Text(
                 '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Theme.of(context).textTheme.bodyLarge?.color,
+                  color: AppColors.primaryColor,
                 ),
               ),
             ],

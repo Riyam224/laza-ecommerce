@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:laza/features/home/data/models/category_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:laza/features/home/data/models/product_model.dart';
-import 'package:laza/features/home/data/models/review_model.dart';
 
 part 'product_remote_data_source.g.dart';
 
@@ -29,5 +29,15 @@ abstract class ProductRemoteDataSource {
   Future<void> addReview(
     @Path("productId") String productId,
     @Body() Map<String, dynamic> body,
+  );
+
+  @GET("categories")
+  Future<CategoryResponse> getCategories();
+
+  @GET("products")
+  Future<HttpResponse<dynamic>> getProductsByCategory(
+    @Query("categoryId") String categoryId,
+    @Query("page") int page,
+    @Query("pageSize") int pageSize,
   );
 }

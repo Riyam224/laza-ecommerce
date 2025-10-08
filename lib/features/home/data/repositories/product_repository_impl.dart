@@ -3,6 +3,7 @@ import 'package:laza/features/home/data/models/product_model.dart';
 import 'package:laza/features/home/data/models/review_model.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/domain/entities/review_entity.dart';
+import 'package:laza/features/home/domain/entities/category_entity.dart';
 import 'package:laza/features/home/domain/repositories/product_repository.dart';
 
 class ProductRepositoryImpl implements ProductRepository {
@@ -54,10 +55,45 @@ class ProductRepositoryImpl implements ProductRepository {
   @override
   Future<void> addReview(String productId, ReviewEntity review) async {
     final body = {
-      "userName": review.userName,
-      "comment": review.comment,
-      "rating": review.rating,
+      'userName': review.userName,
+      'comment': review.comment,
+      'rating': review.rating.toInt(), // ✅ convert here, not in the entity
     };
     await remoteDataSource.addReview(productId, body);
+  }
+
+  // ✅ Get all categories
+  @override
+  Future<List<CategoryEntity>> getCategories() async {
+    try {
+      // 🚀 Directly returns CategoryResponse, not HttpResponse
+      final response = await remoteDataSource.getCategories();
+
+      // ✅ response.categories is already a List<CategoryModel>
+      return response.categories.map((e) => e.toEntity()).toList();
+    } catch (e, s) {
+      // Optional: add logging
+      print("❌ Failed to load categories: $e\n$s");
+      throw Exception("Failed to load categories: $e");
+    }
+  }
+
+  // todo
+  @override
+  Future<List<ProductEntity>> getProductsByCategory(String categoryName) async {
+    try {
+      final response = await remoteDataSource.getProductsByCategory(
+        categoryName,
+        1, // page
+        20, // pageSize
+      );
+
+      final data = response.data['items'] as List<dynamic>;
+      return data.map((e) => ProductModel.fromJson(e).toEntity()).toList();
+    } catch (e) {
+      throw Exception(
+        "Failed to load products for category '$categoryName': $e",
+      );
+    }
   }
 }

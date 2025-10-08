@@ -27,23 +27,14 @@ class ProductDetailScreen extends StatefulWidget {
 
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   String selectedSize = 'M';
-
   int selectedImageIndex = 0;
-
-  final List<String> productImages = [
-    Assets.resourceImagesProduct,
-    Assets.resourceImagesProduct,
-    Assets.resourceImagesProduct,
-    Assets.resourceImagesProduct,
-  ];
-
   final List<String> sizes = ['S', 'M', 'L', 'XL', '2XL'];
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<ProductCubit>()
-        ..getProductById(widget.productId ?? '1'),
+      create: (context) =>
+          sl<ProductCubit>()..getProductById(widget.productId ?? '1'),
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: BlocBuilder<ProductCubit, ProductState>(
@@ -68,8 +59,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       ElevatedButton(
                         onPressed: () {
                           context.read<ProductCubit>().getProductById(
-                                widget.productId ?? '1',
-                              );
+                            widget.productId ?? '1',
+                          );
                         },
                         child: const Text('Retry'),
                       ),
@@ -82,6 +73,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             if (state is ProductDetailLoaded) {
               final product = state.product;
 
+              // Create list of images using the product's cover image
+              // final List<String> productImages = [
+              //   product.coverPictureUrl,
+              //   product.coverPictureUrl,
+              //   product.coverPictureUrl,
+              //   product.coverPictureUrl,
+              // ];
+              // ✅ Use the same cover image 4 times for thumbnails
+              final List<String> productImages = List.filled(
+                4,
+                product.coverPictureUrl,
+              );
+
+              // todo. _____________________
               return Column(
                 children: [
                   Expanded(
@@ -97,15 +102,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   child: SizedBox(
                                     width: double.infinity,
                                     height: 400,
+                                    // todo image _____
                                     child: Image.network(
                                       product.coverPictureUrl,
                                       fit: BoxFit.contain,
-                                      errorBuilder: (context, error, stackTrace) {
-                                        return Image.asset(
-                                          Assets.resourceImagesProduct,
-                                          fit: BoxFit.contain,
-                                        );
-                                      },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            return Image.asset(
+                                              Assets.resourceImagesProduct,
+                                              fit: BoxFit.contain,
+                                            );
+                                          },
                                     ),
                                   ),
                                 ),
@@ -114,7 +121,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   left: 20,
                                   right: 20,
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       CustomIconWithBg(
                                         iconImg: Assets.resourceImagesArrowLeft,
@@ -133,12 +141,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ],
                                   ),
                                 ),
-                                Positioned(
-                                  top: 322,
-                                  left: 20,
-                                  right: 20,
-                                  child: Image.asset(Assets.resourceImagesNike),
-                                ),
+                                // todo fix it later
+                                // Positioned(
+                                //   top: 322,
+                                //   left: 20,
+                                //   right: 20,
+                                //   child: Image.asset(Assets.resourceImagesNike),
+                                // ),
                               ],
                             ),
                           ),

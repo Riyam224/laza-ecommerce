@@ -17,4 +17,5 @@ class AppRoutes {
   static const String payment = '/payment';
   static const String addNewCard = '/addNewCard';
   static const String orderConfirmed = '/orderConfirmed';
+  static const String categoryProducts = '/categoryProducts';
 }

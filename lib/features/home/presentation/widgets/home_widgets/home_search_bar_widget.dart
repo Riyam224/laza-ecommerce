@@ -1,10 +1,25 @@
 // widgets/search_bar_widget.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/features/home/presentation/cubit/product_cubit/product_cubit.dart';
 
-class SearchBarWidget extends StatelessWidget {
+class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({super.key});
+
+  @override
+  State<SearchBarWidget> createState() => _SearchBarWidgetState();
+}
+
+class _SearchBarWidgetState extends State<SearchBarWidget> {
+  final TextEditingController _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +43,13 @@ class SearchBarWidget extends StatelessWidget {
                     height: 28,
                   ),
                   const SizedBox(width: 12),
-                  const Expanded(
+                  Expanded(
                     child: TextField(
-                      decoration: InputDecoration(
+                      controller: _searchController,
+                      onChanged: (query) {
+                        context.read<ProductCubit>().searchProducts(query);
+                      },
+                      decoration: const InputDecoration(
                         hintText: 'Search...',
                         border: InputBorder.none,
                         hintStyle: TextStyle(color: Colors.grey),

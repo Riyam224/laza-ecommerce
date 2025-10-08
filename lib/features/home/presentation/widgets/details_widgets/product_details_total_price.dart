@@ -34,7 +34,7 @@ class TotalPrice extends StatelessWidget {
           Text(
             '\$${price.toStringAsFixed(2)}',
             style: TextStyle(
-              fontSize: 28,
+              fontSize: 20,
               fontWeight: FontWeight.bold,
               color: Theme.of(context).textTheme.bodyLarge?.color,
             ),

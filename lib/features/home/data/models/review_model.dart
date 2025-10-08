@@ -8,7 +8,7 @@ class ReviewModel {
   final String? id;
   final String userName;
   final String comment;
-  final double rating;
+  final num rating;
   final String? createdAt;
   final String? userPicture;
 

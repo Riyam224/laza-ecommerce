@@ -13,6 +13,7 @@ import 'package:laza/features/auth/presentation/screens/signup_screen.dart';
 import 'package:laza/features/auth/presentation/screens/verification_code_screen.dart';
 import 'package:laza/features/cart/presentation/screen/cart_screen.dart';
 import 'package:laza/features/cart/presentation/screen/order_confirmed_screen.dart';
+import 'package:laza/features/home/presentation/screens/category_products_screen.dart';
 import 'package:laza/features/home/presentation/screens/home_screen.dart';
 import 'package:laza/features/home/presentation/screens/product_details_screen.dart';
 import 'package:laza/features/onboarding/presentation/screens/onboarding_screen.dart';
@@ -27,7 +28,7 @@ class RouteGenerator {
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('404 Not Found'))),
     // todo initial route
-    initialLocation: AppRoutes.login,
+    initialLocation: AppRoutes.home,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -88,11 +89,48 @@ class RouteGenerator {
         builder: (context, state) => const HomeScreen(),
       ),
       GoRoute(
+        path: AppRoutes.categoryProducts,
+        name: AppRoutes.categoryProducts,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return CategoryProductsPage(
+            categoryId: extra['categoryId'] as String,
+            categoryName: extra['categoryName'] as String,
+            categoryLogo: extra['categoryLogo'] as String,
+          );
+        },
+      ),
+      // todo. __________
+      GoRoute(
         path: AppRoutes.productDetails,
         name: AppRoutes.productDetails,
-        builder: (context, state) {
+        pageBuilder: (context, state) {
           final productId = state.extra as String; // ✅ receive UUID
-          return ProductDetailScreen(productId: productId);
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: ProductDetailScreen(productId: productId),
+            transitionsBuilder: (context, animation, secondaryAnimation, child) {
+              // Slide from right with fade
+              const begin = Offset(1.0, 0.0);
+              const end = Offset.zero;
+              const curve = Curves.easeInOutCubic;
+
+              var slideTween = Tween(begin: begin, end: end)
+                  .chain(CurveTween(curve: curve));
+              var fadeAnimation = CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeIn,
+              );
+
+              return SlideTransition(
+                position: animation.drive(slideTween),
+                child: FadeTransition(
+                  opacity: fadeAnimation,
+                  child: child,
+                ),
+              );
+            },
+          );
         },
       ),
       GoRoute(

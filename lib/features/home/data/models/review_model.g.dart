@@ -10,7 +10,7 @@ ReviewModel _$ReviewModelFromJson(Map<String, dynamic> json) => ReviewModel(
   id: json['id'] as String?,
   userName: json['userName'] as String,
   comment: json['comment'] as String,
-  rating: (json['rating'] as num).toDouble(),
+  rating: json['rating'] as num,
   createdAt: json['createdAt'] as String?,
   userPicture: json['userPicture'] as String?,
 );

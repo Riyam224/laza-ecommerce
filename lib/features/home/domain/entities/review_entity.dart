@@ -2,7 +2,7 @@ class ReviewEntity {
   final String? id;
   final String userName;
   final String comment;
-  final double rating;
+  final num rating;
   final String? date;
   final String? userPicture; // ✅ add this field
 
