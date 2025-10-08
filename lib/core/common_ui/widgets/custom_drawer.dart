@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/theming/app_colors.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/features/homeAndDetails/presentation/screens/home_screen.dart';
+import 'package:laza/features/home/presentation/screens/home_screen.dart';
 import 'package:laza/features/payment/presentation/screen/add_new_card_screen.dart';
 
 // 🧭 Import your screens here

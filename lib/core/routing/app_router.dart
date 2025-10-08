@@ -13,13 +13,13 @@ import 'package:laza/features/auth/presentation/screens/signup_screen.dart';
 import 'package:laza/features/auth/presentation/screens/verification_code_screen.dart';
 import 'package:laza/features/cart/presentation/screen/cart_screen.dart';
 import 'package:laza/features/cart/presentation/screen/order_confirmed_screen.dart';
-import 'package:laza/features/homeAndDetails/presentation/screens/home_screen.dart';
-import 'package:laza/features/homeAndDetails/presentation/screens/product_details_screen.dart';
+import 'package:laza/features/home/presentation/screens/home_screen.dart';
+import 'package:laza/features/home/presentation/screens/product_details_screen.dart';
 import 'package:laza/features/onboarding/presentation/screens/onboarding_screen.dart';
 import 'package:laza/features/payment/presentation/screen/add_new_card_screen.dart';
 import 'package:laza/features/payment/presentation/screen/payment_screen.dart';
-import 'package:laza/features/reviews/presentation/screen/add_review_screen.dart';
-import 'package:laza/features/reviews/presentation/screen/reviews_screen.dart';
+import 'package:laza/features/home/presentation/screens/add_review_screen.dart';
+import 'package:laza/features/home/presentation/screens/reviews_screen.dart';
 import 'package:laza/features/splash/presentation/screens/splash_screen.dart';
 
 class RouteGenerator {
@@ -27,9 +27,9 @@ class RouteGenerator {
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('404 Not Found'))),
     // todo initial route
-    initialLocation: AppRoutes.onboarding,
+    initialLocation: AppRoutes.home,
     routes: [
-      GoRoute(
+    GoRoute(
         path: AppRoutes.splash,
         name: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),

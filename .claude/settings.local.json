@@ -3,7 +3,8 @@
     "allow": [
       "Bash(cd:*)",
       "Bash(flutter analyze:*)",
-      "Bash(dart run build_runner:*)"
+      "Bash(dart run build_runner:*)",
+      "Bash(mv:*)"
     ],
     "deny": [],
     "ask": []

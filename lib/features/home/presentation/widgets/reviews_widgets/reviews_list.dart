@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/review_section.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/review_section.dart';
 
 class ReviewsList extends StatelessWidget {
   const ReviewsList({super.key});

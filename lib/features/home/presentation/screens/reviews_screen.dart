@@ -4,7 +4,7 @@ import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/theming/app_colors.dart';
 
-import 'package:laza/features/reviews/presentation/widgets/reviews_list.dart';
+import 'package:laza/features/home/presentation/widgets/reviews_widgets/reviews_list.dart';
 
 class ReviewsScreen extends StatelessWidget {
   const ReviewsScreen({super.key});

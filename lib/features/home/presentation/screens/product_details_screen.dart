@@ -6,12 +6,12 @@ import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/theming/app_colors.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/product_details.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/product_details_size_selector.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/product_details_total_price.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/product_image_thumbnail.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/product_info.dart';
-import 'package:laza/features/homeAndDetails/presentation/widgets/details_widgets/review_section.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/product_details.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/product_details_size_selector.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/product_details_total_price.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/product_image_thumbnail.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/product_info.dart';
+import 'package:laza/features/home/presentation/widgets/details_widgets/review_section.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   const ProductDetailScreen({super.key});
