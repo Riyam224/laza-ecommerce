@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class ReviewsSection extends StatelessWidget {
-  const ReviewsSection({super.key});
+  final String productId;
+
+  const ReviewsSection({super.key, required this.productId});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class ReviewsSection extends StatelessWidget {
               ),
               GestureDetector(
                 onTap: () {
-                  GoRouter.of(context).go('/reviews');
+                  GoRouter.of(context).push('/reviews', extra: productId);
                 },
                 child: Text(
                   'View All',

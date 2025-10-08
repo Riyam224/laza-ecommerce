@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class ProductInfo extends StatelessWidget {
   final String category;
   final String name;
-  final int price;
+  final double price;
 
   const ProductInfo({
     super.key,
@@ -51,7 +51,7 @@ class ProductInfo extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               Text(
-                '\$$price',
+                '\$${price.toStringAsFixed(2)}',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,

@@ -20,6 +20,16 @@ class ProductLoaded extends ProductState {
   List<Object?> get props => [products];
 }
 
+class ProductDetailLoading extends ProductState {}
+
+class ProductDetailLoaded extends ProductState {
+  final ProductEntity product;
+  const ProductDetailLoaded(this.product);
+
+  @override
+  List<Object?> get props => [product];
+}
+
 class ProductError extends ProductState {
   final String message;
   const ProductError(this.message);

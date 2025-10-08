@@ -81,8 +81,16 @@ void _setupProducts() {
   sl.registerLazySingleton(() => AddReviewUseCase(sl()));
 
   // ✅ 9. Cubits
-  sl.registerFactory(() => ProductCubit(sl()));
   sl.registerFactory(
-    () => ReviewCubit(getReviewsUseCase: sl(), addReviewUseCase: sl()),
+    () => ProductCubit(
+      getProductsUseCase: sl(),
+      getProductByIdUseCase: sl(),
+    ),
+  );
+  sl.registerFactory(
+    () => ReviewCubit(
+      getReviewsUseCase: sl(),
+      addReviewUseCase: sl(),
+    ),
   );
 }

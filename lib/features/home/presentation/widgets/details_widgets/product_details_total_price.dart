@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 
 class TotalPrice extends StatelessWidget {
-  final int price;
+  final double price;
 
   const TotalPrice({super.key, required this.price});
 
@@ -32,7 +32,7 @@ class TotalPrice extends StatelessWidget {
             ],
           ),
           Text(
-            '\$$price',
+            '\$${price.toStringAsFixed(2)}',
             style: TextStyle(
               fontSize: 28,
               fontWeight: FontWeight.bold,

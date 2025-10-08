@@ -29,7 +29,7 @@ class RouteGenerator {
     // todo initial route
     initialLocation: AppRoutes.home,
     routes: [
-    GoRoute(
+      GoRoute(
         path: AppRoutes.splash,
         name: AppRoutes.splash,
         builder: (context, state) => const SplashScreen(),
@@ -90,7 +90,10 @@ class RouteGenerator {
       GoRoute(
         path: AppRoutes.productDetails,
         name: AppRoutes.productDetails,
-        builder: (context, state) => const ProductDetailScreen(),
+        builder: (context, state) {
+          final productId = state.extra as String; // ✅ receive UUID
+          return ProductDetailScreen(productId: productId);
+        },
       ),
       GoRoute(
         path: AppRoutes.reviews,
@@ -100,7 +103,10 @@ class RouteGenerator {
       GoRoute(
         path: AppRoutes.addReview,
         name: AppRoutes.addReview,
-        builder: (context, state) => const AddReviewScreen(),
+        builder: (context, state) {
+          final productId = state.extra as String;
+          return AddReviewScreen(productId: productId);
+        },
       ),
 
       GoRoute(

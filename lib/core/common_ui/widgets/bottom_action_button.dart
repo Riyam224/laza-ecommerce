@@ -3,7 +3,7 @@ import 'package:laza/core/theming/app_colors.dart';
 
 class BottomActionButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final Color? backgroundColor;
   final Color? textColor;
   final double? height;

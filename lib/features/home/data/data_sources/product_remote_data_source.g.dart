@@ -22,12 +22,15 @@ class _ProductRemoteDataSource implements ProductRemoteDataSource {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<List<ProductModel>> getProducts() async {
+  Future<HttpResponse<dynamic>> getProducts(
+    Map<String, dynamic> queries,
+  ) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
+    queryParameters.addAll(queries);
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<List<ProductModel>>(
+    final _options = _setStreamType<HttpResponse<dynamic>>(
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
@@ -37,17 +40,10 @@ class _ProductRemoteDataSource implements ProductRemoteDataSource {
           )
           .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
     );
-    final _result = await _dio.fetch<List<dynamic>>(_options);
-    late List<ProductModel> _value;
-    try {
-      _value = _result.data!
-          .map((dynamic i) => ProductModel.fromJson(i as Map<String, dynamic>))
-          .toList();
-    } on Object catch (e, s) {
-      errorLogger?.logError(e, s, _options);
-      rethrow;
-    }
-    return _value;
+    final _result = await _dio.fetch(_options);
+    final _value = _result.data;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override

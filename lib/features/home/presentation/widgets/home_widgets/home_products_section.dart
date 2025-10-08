@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/features/home/domain/entities/product_entity.dart';
 
 class ProductsSection extends StatelessWidget {
   final String title;
-  final List<Product> products;
+  final List<ProductEntity> products;
 
   const ProductsSection({
     super.key,
@@ -66,7 +67,7 @@ class ProductsSection extends StatelessWidget {
 
 // widgets/product_card.dart
 class ProductCard extends StatelessWidget {
-  final Product product;
+  final ProductEntity product;
 
   const ProductCard({super.key, required this.product});
 
@@ -83,7 +84,18 @@ class ProductCard extends StatelessWidget {
             ),
             child: Stack(
               children: [
-                Center(child: Image.asset(product.imageUrl, fit: BoxFit.cover)),
+                Center(
+                  child: Image.network(
+                    product.coverPictureUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset(
+                        Assets.resourceImagesProduct,
+                        fit: BoxFit.cover,
+                      );
+                    },
+                  ),
+                ),
                 Positioned(
                   top: 12,
                   right: 12,
@@ -113,7 +125,7 @@ class ProductCard extends StatelessWidget {
         // todo nav to product details
         GestureDetector(
           onTap: () {
-            GoRouter.of(context).push('/productDetails');
+          (context).push('/productDetails', extra: product.id);
           },
           child: Text(
             product.name,
@@ -124,19 +136,10 @@ class ProductCard extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          '\$${product.price}',
+          '\$${product.price.toStringAsFixed(2)}',
           style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
         ),
       ],
     );
   }
-}
-
-// models/product.dart
-class Product {
-  final String name;
-  final int price;
-  final String imageUrl;
-
-  Product({required this.name, required this.price, required this.imageUrl});
 }
