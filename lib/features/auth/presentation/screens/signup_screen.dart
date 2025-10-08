@@ -115,7 +115,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     final password = _passwordController.text.trim();
 
                     // Validate username
-                    final usernameError = ErrorMessages.validateUsername(username);
+                    final usernameError = ErrorMessages.validateUsername(
+                      username,
+                    );
                     if (usernameError != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -139,7 +141,9 @@ class _SignupScreenState extends State<SignupScreen> {
                     }
 
                     // Validate password
-                    final passwordError = ErrorMessages.validatePassword(password);
+                    final passwordError = ErrorMessages.validatePassword(
+                      password,
+                    );
                     if (passwordError != null) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
@@ -190,11 +194,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   CustomTextField(
                     label: "Username",
                     controller: _usernameController,
-                    suffix: Icon(
-                      Icons.check,
-                      color: Colors.green,
-                      size: 20,
-                    ),
+                    suffix: Icon(Icons.check, color: Colors.green, size: 20),
                   ),
                   const SizedBox(height: 20),
 
@@ -206,10 +206,13 @@ class _SignupScreenState extends State<SignupScreen> {
                           label: "Password",
                           controller: _passwordController,
                           obscureText: _obscurePassword,
-                          onChanged: (_) => setState(() {}), // Update strength indicator
+                          onChanged: (_) =>
+                              setState(() {}), // Update strength indicator
                           suffix: IconButton(
                             icon: Icon(
-                              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+                              _obscurePassword
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.grey,
                               size: 20,
                             ),
@@ -276,6 +279,57 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                     ],
                   ),
+
+                  // todo
+                  const SizedBox(height: 40),
+
+                  // 📄 Terms & Condition
+                  const Center(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20),
+                      child: Text.rich(
+                        TextSpan(
+                          text:
+                              "By connecting your account confirm that you agree with our ",
+                          style: TextStyle(color: Colors.grey, fontSize: 13.5),
+                          children: [
+                            TextSpan(
+                              text: "Term and Condition",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // 📝 Sign Up Link
+                  Center(
+                    child: GestureDetector(
+                      onTap: () => context.push(AppRoutes.login),
+                      child: RichText(
+                        text: const TextSpan(
+                          text: "Already have an account? ",
+                          style: TextStyle(color: Colors.grey, fontSize: 15),
+                          children: [
+                            TextSpan(
+                              text: "Sign in",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),
