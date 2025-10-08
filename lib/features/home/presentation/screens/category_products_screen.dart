@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/di.dart';
 import 'package:laza/core/theming/app_colors.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
@@ -228,13 +229,21 @@ class _ProductCard extends StatelessWidget {
           const SizedBox(height: 8),
 
           // Name
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              product.name,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
+          GestureDetector(
+            onTap: () {
+              (context).push('/productDetails', extra: product.id);
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 6),
+              child: Text(
+                product.name,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                ),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ),
 

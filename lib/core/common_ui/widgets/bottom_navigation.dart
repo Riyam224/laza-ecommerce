@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:laza/core/theming/app_colors.dart';
 
 class BottomNavWidget extends StatefulWidget {
   const BottomNavWidget({super.key});
@@ -51,7 +52,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
         children: [
           Icon(
             icon,
-            color: isSelected ? const Color(0xFF9775FA) : Colors.grey,
+            color: isSelected ? AppColors.primaryColor : Colors.grey,
             size: 28,
           ),
           if (label.isNotEmpty) ...[
@@ -59,7 +60,7 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? const Color(0xFF9775FA) : Colors.grey,
+                color: isSelected ? AppColors.primaryColor : Colors.grey,
                 fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
@@ -72,4 +73,3 @@ class _BottomNavWidgetState extends State<BottomNavWidget> {
 }
 
 // models/brand.dart
-

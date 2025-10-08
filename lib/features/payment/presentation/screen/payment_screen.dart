@@ -206,23 +206,28 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   border: Border.all(color: AppColors.primaryColor, width: 1.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.add_circle_outline,
-                      color: AppColors.primaryColor,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Add new card',
-                      style: TextStyle(
+                child: GestureDetector(
+                  onTap: () {
+                    GoRouter.of(context).go('/addNewCard');
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.add_circle_outline,
                         color: AppColors.primaryColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
                       ),
-                    ),
-                  ],
+                      const SizedBox(width: 8),
+                      Text(
+                        'Add new card',
+                        style: TextStyle(
+                          color: AppColors.primaryColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               const SizedBox(height: 24),
@@ -295,7 +300,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
       // 🟣 Save Card Button
       bottomNavigationBar: BottomActionButton(
         text: 'Save Card',
-        onPressed: () {},
+        onPressed: () {
+          GoRouter.of(context).go('/orderConfirmed');
+        },
         backgroundColor: AppColors.primaryColor,
       ),
     );

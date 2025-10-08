@@ -4,6 +4,7 @@ import 'package:laza/features/auth/data/models/register/register_request_model.d
 import 'package:laza/features/auth/data/models/register/register_response_model.dart';
 import 'package:laza/features/auth/data/models/login/login_request_model.dart';
 import 'package:laza/features/auth/data/models/login/login_response_model.dart';
+import 'package:laza/features/auth/data/models/user/user_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'auth_api_service.g.dart';
@@ -26,4 +27,8 @@ abstract class AuthApiService {
 
   @POST("auth/reset-password")
   Future<void> resetPassword(@Body() Map<String, dynamic> body);
+
+  // lib/features/auth/data/data_sources/auth_api_service.dart
+  @GET('/api/auth/me')
+  Future<UserModel> getUserInfo();
 }

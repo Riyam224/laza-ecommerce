@@ -32,6 +32,8 @@ class Assets {
 
   static const String resourceImagesMenuDrawer = "assets/images/menu_drawer.png";
 
+  static const String resourceImagesNezuko  = "assets/images/Nezuko .jpg";
+
   static const String resourceImagesNike = "assets/images/nike.png";
 
   static const String resourceImagesOnboarding = "assets/images/onboarding.png";

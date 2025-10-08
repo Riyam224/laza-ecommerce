@@ -56,9 +56,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           create: (context) =>
               sl<ProductCubit>()..getProductById(widget.productId ?? '1'),
         ),
-        BlocProvider(
-          create: (context) => sl<CartCubit>(),
-        ),
+        BlocProvider(create: (context) => sl<CartCubit>()),
       ],
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -89,69 +87,72 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           },
           child: BlocBuilder<ProductCubit, ProductState>(
             builder: (context, state) {
-            if (state is ProductDetailLoading) {
-              return const Center(child: CircularProgressIndicator());
-            }
+              if (state is ProductDetailLoading) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-            if (state is ProductError) {
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        state.message,
-                        style: const TextStyle(color: Colors.red),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 16),
-                      ElevatedButton(
-                        onPressed: () {
-                          context.read<ProductCubit>().getProductById(
-                            widget.productId ?? '1',
-                          );
-                        },
-                        child: const Text('Retry'),
-                      ),
-                    ],
+              if (state is ProductError) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          state.message,
+                          style: const TextStyle(color: Colors.red),
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () {
+                            context.read<ProductCubit>().getProductById(
+                              widget.productId ?? '1',
+                            );
+                          },
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }
+                );
+              }
 
-            if (state is ProductDetailLoaded) {
-              final product = state.product;
+              if (state is ProductDetailLoaded) {
+                final product = state.product;
 
-              // Create list of images using the product's cover image
-              // final List<String> productImages = [
-              //   product.coverPictureUrl,
-              //   product.coverPictureUrl,
-              //   product.coverPictureUrl,
-              //   product.coverPictureUrl,
-              // ];
-              // ✅ Use the same cover image 4 times for thumbnails
-              final List<String> productImages = List.filled(
-                4,
-                product.coverPictureUrl,
-              );
+                // ✅ Use the same cover image 4 times for thumbnails
+                final List<String> productImages = List.filled(
+                  4,
+                  product.coverPictureUrl,
+                );
 
-              // todo. _____________________
-              return Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          Container(
-                            color: AppColors.iconsBg,
-                            child: Stack(
+                // todo. _____________________
+                return Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Stack(
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top: 60),
-                                  child: SizedBox(
+                                  padding: const EdgeInsets.only(top: 30),
+                                  child: Container(
                                     width: double.infinity,
                                     height: 400,
+                                    decoration: const BoxDecoration(
+                                      border: Border(
+                                        left: BorderSide(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                        right: BorderSide(
+                                          color: Colors.grey,
+                                          width: 1,
+                                        ),
+                                      ),
+                                    ),
                                     // todo image _____
                                     child: Image.network(
                                       product.coverPictureUrl,
@@ -191,64 +192,56 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ],
                                   ),
                                 ),
-                                // todo fix it later
-                                // Positioned(
-                                //   top: 322,
-                                //   left: 20,
-                                //   right: 20,
-                                //   child: Image.asset(Assets.resourceImagesNike),
-                                // ),
                               ],
                             ),
-                          ),
-                          ProductInfo(
-                            category: "Product",
-                            name: product.name,
-                            price: product.price,
-                          ),
-                          const SizedBox(height: 20),
-                          ImageThumbnails(
-                            images: productImages,
-                            selectedIndex: selectedImageIndex,
-                            onImageSelected: (index) {
-                              setState(() {
-                                selectedImageIndex = index;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          SizeSelector(
-                            sizes: sizes,
-                            selectedSize: selectedSize,
-                            onSizeSelected: (size) {
-                              setState(() {
-                                selectedSize = size;
-                              });
-                            },
-                          ),
-                          const SizedBox(height: 24),
-                          const ProductDescription(),
-                          const SizedBox(height: 24),
-                          ReviewsSection(productId: product.id),
-                          const SizedBox(height: 24),
-                          TotalPrice(price: product.price),
-                          const SizedBox(height: 16),
-                        ],
+                            ProductInfo(
+                              category: "Product",
+                              name: product.name,
+                              price: product.price,
+                            ),
+                            const SizedBox(height: 20),
+                            ImageThumbnails(
+                              images: productImages,
+                              selectedIndex: selectedImageIndex,
+                              onImageSelected: (index) {
+                                setState(() {
+                                  selectedImageIndex = index;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            SizeSelector(
+                              sizes: sizes,
+                              selectedSize: selectedSize,
+                              onSizeSelected: (size) {
+                                setState(() {
+                                  selectedSize = size;
+                                });
+                              },
+                            ),
+                            const SizedBox(height: 24),
+                            const ProductDescription(),
+                            const SizedBox(height: 24),
+                            ReviewsSection(productId: product.id),
+                            const SizedBox(height: 24),
+                            TotalPrice(price: product.price),
+                            const SizedBox(height: 16),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  BottomActionButton(
-                    text: 'Add to Cart',
-                    backgroundColor: AppColors.primaryColor,
-                    onPressed: () {
-                      _addToCart(context, product);
-                    },
-                  ),
-                ],
-              );
-            }
+                    BottomActionButton(
+                      text: 'Add to Cart',
+                      backgroundColor: AppColors.primaryColor,
+                      onPressed: () {
+                        _addToCart(context, product);
+                      },
+                    ),
+                  ],
+                );
+              }
 
-            return const Center(child: Text('No product data'));
+              return const Center(child: Text('No product data'));
             },
           ),
         ),

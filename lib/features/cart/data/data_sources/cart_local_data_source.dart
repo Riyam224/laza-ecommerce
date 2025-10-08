@@ -1,3 +1,99 @@
+// // import 'dart:convert';
+// // import 'package:shared_preferences/shared_preferences.dart';
+// // import 'package:laza/features/cart/data/models/cart_item_model.dart';
+
+// // abstract class CartLocalDataSource {
+// //   Future<List<CartItemModel>> getCartItems();
+// //   Future<void> addToCart(CartItemModel item);
+// //   Future<void> removeFromCart(String itemId);
+// //   Future<void> updateQuantity(String itemId, int quantity);
+// //   Future<void> clearCart();
+// // }
+
+// // class CartLocalDataSourceImpl implements CartLocalDataSource {
+// //   final SharedPreferences sharedPreferences;
+// //   static const String cartKey = 'CACHED_CART_ITEMS';
+
+// //   CartLocalDataSourceImpl({required this.sharedPreferences});
+
+// //   @override
+// //   Future<List<CartItemModel>> getCartItems() async {
+// //     final jsonString = sharedPreferences.getString(cartKey);
+// //     if (jsonString != null) {
+// //       final List<dynamic> jsonList = json.decode(jsonString);
+// //       return jsonList.map((json) => CartItemModel.fromJson(json)).toList();
+// //     }
+// //     return [];
+// //   }
+
+// //   @override
+// //   Future<void> addToCart(CartItemModel item) async {
+// //     final items = await getCartItems();
+
+// //     // Check if item already exists
+// //     final existingIndex = items.indexWhere(
+// //       (i) => i.productId == item.productId,
+// //     );
+
+// //     if (existingIndex != -1) {
+// //       // Update quantity if item exists
+// //       items[existingIndex] = CartItemModel(
+// //         id: items[existingIndex].id,
+// //         productId: items[existingIndex].productId,
+// //         productName: items[existingIndex].productName,
+// //         productImage: items[existingIndex].productImage,
+// //         price: items[existingIndex].price,
+// //         tax: items[existingIndex].tax,
+// //         quantity: items[existingIndex].quantity + item.quantity,
+// //       );
+// //     } else {
+// //       items.add(item);
+// //     }
+
+// //     await _saveItems(items);
+// //   }
+
+// //   @override
+// //   Future<void> removeFromCart(String itemId) async {
+// //     final items = await getCartItems();
+// //     items.removeWhere((item) => item.id == itemId);
+// //     await _saveItems(items);
+// //   }
+
+// //   @override
+// //   Future<void> updateQuantity(String itemId, int quantity) async {
+// //     final items = await getCartItems();
+// //     final index = items.indexWhere((item) => item.id == itemId);
+
+// //     if (index != -1) {
+// //       if (quantity <= 0) {
+// //         items.removeAt(index);
+// //       } else {
+// //         items[index] = CartItemModel(
+// //           id: items[index].id,
+// //           productId: items[index].productId,
+// //           productName: items[index].productName,
+// //           productImage: items[index].productImage,
+// //           price: items[index].price,
+// //           tax: items[index].tax,
+// //           quantity: quantity,
+// //         );
+// //       }
+// //       await _saveItems(items);
+// //     }
+// //   }
+
+// //   @override
+// //   Future<void> clearCart() async {
+// //     await sharedPreferences.remove(cartKey);
+// //   }
+
+// //   Future<void> _saveItems(List<CartItemModel> items) async {
+// //     final jsonList = items.map((item) => item.toJson()).toList();
+// //     await sharedPreferences.setString(cartKey, json.encode(jsonList));
+// //   }
+// // }
+
 // import 'dart:convert';
 // import 'package:shared_preferences/shared_preferences.dart';
 // import 'package:laza/features/cart/data/models/cart_item_model.dart';
@@ -18,36 +114,56 @@
 
 //   @override
 //   Future<List<CartItemModel>> getCartItems() async {
-//     final jsonString = sharedPreferences.getString(cartKey);
-//     if (jsonString != null) {
-//       final List<dynamic> jsonList = json.decode(jsonString);
-//       return jsonList.map((json) => CartItemModel.fromJson(json)).toList();
+//     try {
+//       final jsonString = sharedPreferences.getString(cartKey);
+
+//       if (jsonString == null || jsonString.isEmpty) {
+//         // 🟣 Debug log (optional)
+//         print('🛒 No saved cart found, returning empty list');
+//         return [];
+//       }
+
+//       final decoded = json.decode(jsonString);
+//       if (decoded is! List) {
+//         print('⚠️ Invalid cart data format — resetting cart');
+//         await sharedPreferences.remove(cartKey);
+//         return [];
+//       }
+
+//       final List<CartItemModel> items = decoded
+//           .map((json) => CartItemModel.fromJson(json))
+//           .cast<CartItemModel>()
+//           .toList();
+
+//       print('📦 Loaded ${items.length} items from local cart');
+//       return items;
+//     } catch (e) {
+//       print('❌ Error reading cart: $e');
+//       await sharedPreferences.remove(cartKey); // reset corrupted data
+//       return [];
 //     }
-//     return [];
 //   }
 
 //   @override
 //   Future<void> addToCart(CartItemModel item) async {
 //     final items = await getCartItems();
 
-//     // Check if item already exists
 //     final existingIndex = items.indexWhere(
 //       (i) => i.productId == item.productId,
 //     );
 
 //     if (existingIndex != -1) {
-//       // Update quantity if item exists
-//       items[existingIndex] = CartItemModel(
-//         id: items[existingIndex].id,
-//         productId: items[existingIndex].productId,
-//         productName: items[existingIndex].productName,
-//         productImage: items[existingIndex].productImage,
-//         price: items[existingIndex].price,
-//         tax: items[existingIndex].tax,
-//         quantity: items[existingIndex].quantity + item.quantity,
+//       // ✅ If product exists → update quantity
+//       final existing = items[existingIndex];
+//       items[existingIndex] = existing.copyWith(
+//         quantity: existing.quantity + item.quantity,
+//       );
+//       print(
+//         '🔁 Updated ${existing.productName} quantity → ${items[existingIndex].quantity}',
 //       );
 //     } else {
 //       items.add(item);
+//       print('➕ Added new item: ${item.productName}');
 //     }
 
 //     await _saveItems(items);
@@ -58,6 +174,7 @@
 //     final items = await getCartItems();
 //     items.removeWhere((item) => item.id == itemId);
 //     await _saveItems(items);
+//     print('🗑️ Removed item with id: $itemId');
 //   }
 
 //   @override
@@ -68,16 +185,10 @@
 //     if (index != -1) {
 //       if (quantity <= 0) {
 //         items.removeAt(index);
+//         print('🚫 Removed item with id: $itemId (quantity 0)');
 //       } else {
-//         items[index] = CartItemModel(
-//           id: items[index].id,
-//           productId: items[index].productId,
-//           productName: items[index].productName,
-//           productImage: items[index].productImage,
-//           price: items[index].price,
-//           tax: items[index].tax,
-//           quantity: quantity,
-//         );
+//         items[index] = items[index].copyWith(quantity: quantity);
+//         print('🔄 Updated item ${items[index].productName} → qty: $quantity');
 //       }
 //       await _saveItems(items);
 //     }
@@ -86,11 +197,13 @@
 //   @override
 //   Future<void> clearCart() async {
 //     await sharedPreferences.remove(cartKey);
+//     print('🧹 Cart cleared');
 //   }
 
 //   Future<void> _saveItems(List<CartItemModel> items) async {
 //     final jsonList = items.map((item) => item.toJson()).toList();
 //     await sharedPreferences.setString(cartKey, json.encode(jsonList));
+//     print('💾 Saved ${items.length} items to local cart');
 //   }
 // }
 
@@ -112,71 +225,63 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
 
   CartLocalDataSourceImpl({required this.sharedPreferences});
 
+  // 🧾 Load cart items
   @override
   Future<List<CartItemModel>> getCartItems() async {
     try {
       final jsonString = sharedPreferences.getString(cartKey);
 
       if (jsonString == null || jsonString.isEmpty) {
-        // 🟣 Debug log (optional)
-        print('🛒 No saved cart found, returning empty list');
+        print('🛒 No saved cart found → returning empty list');
         return [];
       }
 
-      final decoded = json.decode(jsonString);
-      if (decoded is! List) {
-        print('⚠️ Invalid cart data format — resetting cart');
-        await sharedPreferences.remove(cartKey);
-        return [];
-      }
-
+      final List decoded = json.decode(jsonString);
       final List<CartItemModel> items = decoded
-          .map((json) => CartItemModel.fromJson(json))
-          .cast<CartItemModel>()
+          .map((e) => CartItemModel.fromJson(e as Map<String, dynamic>))
           .toList();
 
       print('📦 Loaded ${items.length} items from local cart');
       return items;
     } catch (e) {
-      print('❌ Error reading cart: $e');
-      await sharedPreferences.remove(cartKey); // reset corrupted data
+      print('❌ Error reading cart: $e → Resetting cart');
+      await sharedPreferences.remove(cartKey);
       return [];
     }
   }
 
+  // ➕ Add new or update existing item
   @override
   Future<void> addToCart(CartItemModel item) async {
     final items = await getCartItems();
 
-    final existingIndex = items.indexWhere(
-      (i) => i.productId == item.productId,
-    );
-
-    if (existingIndex != -1) {
-      // ✅ If product exists → update quantity
-      final existing = items[existingIndex];
-      items[existingIndex] = existing.copyWith(
+    final index = items.indexWhere((i) => i.productId == item.productId);
+    if (index != -1) {
+      final existing = items[index];
+      items[index] = existing.copyWith(
         quantity: existing.quantity + item.quantity,
       );
       print(
-        '🔁 Updated ${existing.productName} quantity → ${items[existingIndex].quantity}',
+        '🔁 Updated ${existing.productName} → qty ${items[index].quantity}',
       );
     } else {
       items.add(item);
-      print('➕ Added new item: ${item.productName}');
+      print('🆕 Added new item → ${item.productName}');
     }
 
     await _saveItems(items);
   }
 
+  // 🗑️ Remove item by ID
   @override
   Future<void> removeFromCart(String itemId) async {
     final items = await getCartItems();
     items.removeWhere((item) => item.id == itemId);
     await _saveItems(items);
-    print('🗑️ Removed item with id: $itemId');
+    print('🗑️ Removed item → $itemId');
   }
 
+  // 🔄 Update item quantity
   @override
   Future<void> updateQuantity(String itemId, int quantity) async {
     final items = await getCartItems();
@@ -185,24 +290,26 @@ class CartLocalDataSourceImpl implements CartLocalDataSource {
     if (index != -1) {
       if (quantity <= 0) {
         items.removeAt(index);
-        print('🚫 Removed item with id: $itemId (quantity 0)');
+        print('🚫 Removed item → $itemId (quantity 0)');
       } else {
         items[index] = items[index].copyWith(quantity: quantity);
-        print('🔄 Updated item ${items[index].productName} → qty: $quantity');
+        print('🔄 Updated ${items[index].productName} → qty $quantity');
       }
       await _saveItems(items);
     }
   }
 
+  // 🧹 Clear cart
   @override
   Future<void> clearCart() async {
     await sharedPreferences.remove(cartKey);
     print('🧹 Cart cleared');
   }
 
+  // 💾 Save updated cart
   Future<void> _saveItems(List<CartItemModel> items) async {
-    final jsonList = items.map((item) => item.toJson()).toList();
+    final jsonList = items.map((e) => e.toJson()).toList();
     await sharedPreferences.setString(cartKey, json.encode(jsonList));
-    print('💾 Saved ${items.length} items to local cart');
+    print('💾 Saved ${items.length} items locally');
   }
 }

@@ -404,7 +404,7 @@ class _CartScreenState extends State<CartScreen> {
       bottomNavigationBar: BottomActionButton(
         text: 'Checkout',
         onPressed: () {
-          GoRouter.of(context).go('/addNewCard');
+          GoRouter.of(context).go('/address');
         },
         backgroundColor: AppColors.primaryColor,
       ),

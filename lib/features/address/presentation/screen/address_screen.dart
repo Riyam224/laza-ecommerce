@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
@@ -41,7 +42,9 @@ class _AddressScreenState extends State<AddressScreen> {
                   CustomIconWithBg(
                     iconImg: Assets.resourceImagesArrowLeft,
                     backgroundColor: AppColors.iconsBg,
-                    onTap: () => Navigator.pop(context),
+                    onTap: () {
+                      GoRouter.of(context).go('/cart');
+                    },
                   ),
                   Text(
                     'Address',
@@ -136,7 +139,9 @@ class _AddressScreenState extends State<AddressScreen> {
       // 🟣 Save Address Button
       bottomNavigationBar: BottomActionButton(
         text: 'Save Address',
-        onPressed: () {},
+        onPressed: () {
+          GoRouter.of(context).go('/payment');
+        },
         backgroundColor: AppColors.primaryColor,
       ),
     );

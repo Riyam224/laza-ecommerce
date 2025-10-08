@@ -29,7 +29,7 @@ class RouteGenerator {
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('404 Not Found'))),
     // todo initial route
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.splash,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -110,27 +110,27 @@ class RouteGenerator {
           return CustomTransitionPage(
             key: state.pageKey,
             child: ProductDetailScreen(productId: productId),
-            transitionsBuilder: (context, animation, secondaryAnimation, child) {
-              // Slide from right with fade
-              const begin = Offset(1.0, 0.0);
-              const end = Offset.zero;
-              const curve = Curves.easeInOutCubic;
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+                  // Slide from right with fade
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOutCubic;
 
-              var slideTween = Tween(begin: begin, end: end)
-                  .chain(CurveTween(curve: curve));
-              var fadeAnimation = CurvedAnimation(
-                parent: animation,
-                curve: Curves.easeIn,
-              );
+                  var slideTween = Tween(
+                    begin: begin,
+                    end: end,
+                  ).chain(CurveTween(curve: curve));
+                  var fadeAnimation = CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeIn,
+                  );
 
-              return SlideTransition(
-                position: animation.drive(slideTween),
-                child: FadeTransition(
-                  opacity: fadeAnimation,
-                  child: child,
-                ),
-              );
-            },
+                  return SlideTransition(
+                    position: animation.drive(slideTween),
+                    child: FadeTransition(opacity: fadeAnimation, child: child),
+                  );
+                },
           );
         },
       ),
@@ -155,7 +155,7 @@ class RouteGenerator {
         path: AppRoutes.cart,
         name: AppRoutes.cart,
         builder: (context, state) => BlocProvider(
-          create: (context) => sl<CartCubit>(),
+          create: (_) => sl<CartCubit>()..loadCart(),
           child: const CartScreen(),
         ),
       ),
