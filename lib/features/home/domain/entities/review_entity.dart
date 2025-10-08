@@ -1,18 +1,17 @@
-import 'package:equatable/equatable.dart';
-
-class ReviewEntity extends Equatable {
+class ReviewEntity {
   final String? id;
   final String userName;
   final String comment;
   final double rating;
+  final String? date;
+  final String? userPicture; // ✅ add this field
 
-  const ReviewEntity({
+  ReviewEntity({
     this.id,
     required this.userName,
     required this.comment,
     required this.rating,
+    this.date,
+    this.userPicture, // ✅ include it in constructor
   });
-
-  @override
-  List<Object?> get props => [id, userName, comment, rating];
 }

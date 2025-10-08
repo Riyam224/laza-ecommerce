@@ -19,9 +19,12 @@ abstract class ProductRemoteDataSource {
   @GET("products/{id}")
   Future<ProductModel> getProductById(@Path("id") String id);
 
-  @GET("reviews/{productId}")
-  Future<List<ReviewModel>> getReviews(@Path("productId") String productId);
-
+  @GET('reviews/{productId}')
+  Future<HttpResponse<dynamic>> getReviews(
+    @Path('productId') String productId,
+    @Query('page') int page,
+    @Query('pageSize') int pageSize,
+  );
   @POST("reviews/{productId}")
   Future<void> addReview(
     @Path("productId") String productId,

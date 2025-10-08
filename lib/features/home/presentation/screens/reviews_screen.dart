@@ -31,7 +31,7 @@ class ReviewsScreen extends StatelessWidget {
                       iconImg: Assets.resourceImagesArrowLeft,
                       backgroundColor: AppColors.iconsBg,
                       onTap: () {
-                        // GoRouter.of(context).pop();
+                        GoRouter.of(context).pop();
                       },
                     ),
                     const SizedBox(width: 85),
@@ -194,11 +194,12 @@ class ReviewsScreen extends StatelessWidget {
                           return Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: ReviewCard(
+                              id: review.id,
                               name: review.userName,
-                              date:
-                                  'Today', // You may want to add createdAt to ReviewEntity
+                              date: review.date ?? 'Recent',
                               rating: review.rating,
                               review: review.comment,
+                              userPicture: review.userPicture,
                             ),
                           );
                         },

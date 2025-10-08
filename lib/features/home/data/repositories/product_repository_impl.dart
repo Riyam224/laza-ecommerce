@@ -1,5 +1,6 @@
 import 'package:laza/features/home/data/data_sources/product_remote_data_source.dart';
 import 'package:laza/features/home/data/models/product_model.dart';
+import 'package:laza/features/home/data/models/review_model.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/domain/entities/review_entity.dart';
 import 'package:laza/features/home/domain/repositories/product_repository.dart';
@@ -36,8 +37,17 @@ class ProductRepositoryImpl implements ProductRepository {
   // ✅ Get reviews for a product
   @override
   Future<List<ReviewEntity>> getReviews(String productId) async {
-    final reviewModels = await remoteDataSource.getReviews(productId);
-    return reviewModels.map((r) => r.toEntity()).toList();
+    final httpResponse = await remoteDataSource.getReviews(productId, 1, 10);
+    final data = httpResponse.data as Map<String, dynamic>;
+
+    // ✅ Navigate to nested structure
+    final items = data['reviews']?['items'] as List<dynamic>? ?? [];
+
+    final reviews = items
+        .map((json) => ReviewModel.fromJson(json as Map<String, dynamic>))
+        .toList();
+
+    return reviews.map((r) => r.toEntity()).toList();
   }
 
   // ✅ Add a new review for a product

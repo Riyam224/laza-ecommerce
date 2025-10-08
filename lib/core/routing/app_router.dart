@@ -27,7 +27,7 @@ class RouteGenerator {
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('404 Not Found'))),
     // todo initial route
-    initialLocation: AppRoutes.home,
+    initialLocation: AppRoutes.login,
     routes: [
       GoRoute(
         path: AppRoutes.splash,
@@ -98,7 +98,10 @@ class RouteGenerator {
       GoRoute(
         path: AppRoutes.reviews,
         name: AppRoutes.reviews,
-        builder: (context, state) => const ReviewsScreen(),
+        builder: (context, state) {
+          final productId = state.extra as String?;
+          return ReviewsScreen(productId: productId);
+        },
       ),
       GoRoute(
         path: AppRoutes.addReview,

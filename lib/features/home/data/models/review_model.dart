@@ -9,12 +9,16 @@ class ReviewModel {
   final String userName;
   final String comment;
   final double rating;
+  final String? createdAt;
+  final String? userPicture;
 
   ReviewModel({
     this.id,
     required this.userName,
     required this.comment,
     required this.rating,
+    this.createdAt,
+    this.userPicture,
   });
 
   factory ReviewModel.fromJson(Map<String, dynamic> json) =>
@@ -27,5 +31,7 @@ class ReviewModel {
     userName: userName,
     comment: comment,
     rating: rating,
+    date: createdAt,
+    userPicture: userPicture, // ✅ added here
   );
 }
