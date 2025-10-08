@@ -7,6 +7,9 @@ import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/di.dart';
 import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/features/cart/domain/entities/cart_item_entity.dart';
+import 'package:laza/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:laza/features/cart/presentation/cubit/cart_state.dart';
 import 'package:laza/features/home/presentation/cubit/product_cubit/product_cubit.dart';
 import 'package:laza/features/home/presentation/cubit/product_cubit/product_state.dart';
 import 'package:laza/features/home/presentation/widgets/details_widgets/product_details.dart';
@@ -30,15 +33,62 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int selectedImageIndex = 0;
   final List<String> sizes = ['S', 'M', 'L', 'XL', '2XL'];
 
+  void _addToCart(BuildContext context, dynamic product) {
+    final cartItem = CartItemEntity(
+      id: '',
+      productId: product.id,
+      productName: product.name,
+      productImage: product.coverPictureUrl,
+      price: product.price,
+      tax: 0.0,
+      quantity: 1,
+      size: selectedSize,
+    );
+
+    context.read<CartCubit>().addItemToCart(cartItem);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) =>
-          sl<ProductCubit>()..getProductById(widget.productId ?? '1'),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) =>
+              sl<ProductCubit>()..getProductById(widget.productId ?? '1'),
+        ),
+        BlocProvider(
+          create: (context) => sl<CartCubit>(),
+        ),
+      ],
       child: Scaffold(
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        body: BlocBuilder<ProductCubit, ProductState>(
-          builder: (context, state) {
+        body: BlocListener<CartCubit, CartState>(
+          listener: (context, cartState) {
+            if (cartState is CartError) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(cartState.message),
+                  backgroundColor: Colors.red,
+                  duration: const Duration(seconds: 2),
+                ),
+              );
+            } else if (cartState is CartItemAdded) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('${cartState.productName} added to cart'),
+                  duration: const Duration(seconds: 2),
+                  action: SnackBarAction(
+                    label: 'View Cart',
+                    onPressed: () {
+                      GoRouter.of(context).push('/cart');
+                    },
+                  ),
+                ),
+              );
+            }
+          },
+          child: BlocBuilder<ProductCubit, ProductState>(
+            builder: (context, state) {
             if (state is ProductDetailLoading) {
               return const Center(child: CircularProgressIndicator());
             }
@@ -191,8 +241,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     text: 'Add to Cart',
                     backgroundColor: AppColors.primaryColor,
                     onPressed: () {
-                      // todo add to cart
-                      GoRouter.of(context).push('/cart');
+                      _addToCart(context, product);
                     },
                   ),
                 ],
@@ -200,7 +249,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             }
 
             return const Center(child: Text('No product data'));
-          },
+            },
+          ),
         ),
       ),
     );

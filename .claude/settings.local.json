@@ -6,7 +6,9 @@
       "Bash(dart run build_runner:*)",
       "Bash(mv:*)",
       "Bash(curl -X GET \"https://accessories-eshop.runasp.net/api/products?page=1&pageSize=10\" -H \"accept: application/json\")",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Read(//Users/r/StudioProjects/**)",
+      "Bash(flutter pub run build_runner build:*)"
     ],
     "deny": [],
     "ask": []

@@ -13,6 +13,7 @@ import 'package:laza/features/auth/presentation/screens/signup_screen.dart';
 import 'package:laza/features/auth/presentation/screens/verification_code_screen.dart';
 import 'package:laza/features/cart/presentation/screen/cart_screen.dart';
 import 'package:laza/features/cart/presentation/screen/order_confirmed_screen.dart';
+import 'package:laza/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:laza/features/home/presentation/screens/category_products_screen.dart';
 import 'package:laza/features/home/presentation/screens/home_screen.dart';
 import 'package:laza/features/home/presentation/screens/product_details_screen.dart';
@@ -153,7 +154,10 @@ class RouteGenerator {
       GoRoute(
         path: AppRoutes.cart,
         name: AppRoutes.cart,
-        builder: (context, state) => const CartScreen(),
+        builder: (context, state) => BlocProvider(
+          create: (context) => sl<CartCubit>(),
+          child: const CartScreen(),
+        ),
       ),
 
       GoRoute(

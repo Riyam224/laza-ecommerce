@@ -3,9 +3,9 @@ import 'package:laza/core/di.dart';
 import 'package:laza/core/routing/app_router.dart';
 import 'package:laza/core/theming/app_themes.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  setupDependencies();
+  await setupDependencies();
   runApp(const LazaApp());
 }
 

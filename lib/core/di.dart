@@ -1,7 +1,6 @@
-
-
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // 🌍 Core
 import 'package:laza/core/networking/dio_client.dart';
@@ -34,16 +33,32 @@ import 'package:laza/features/home/presentation/cubit/review_cubit/review_cubit.
 import 'package:laza/features/home/presentation/cubit/category_cubit/category_cubit.dart';
 import 'package:laza/features/home/presentation/cubit/category_products/category_products_cubit.dart';
 
+// 🛒 Cart Feature
+import 'package:laza/features/cart/data/data_sources/cart_remote_data_source.dart';
+import 'package:laza/features/cart/data/repositories/cart_repository_impl.dart';
+import 'package:laza/features/cart/domain/repositories/cart_repository.dart';
+import 'package:laza/features/cart/domain/use_cases/add_to_cart_usecase.dart';
+import 'package:laza/features/cart/domain/use_cases/clear_cart_usecase.dart';
+import 'package:laza/features/cart/domain/use_cases/get_cart_items_usecase.dart';
+import 'package:laza/features/cart/domain/use_cases/remove_from_cart_usecase.dart';
+import 'package:laza/features/cart/domain/use_cases/update_cart_quantity_usecase.dart';
+import 'package:laza/features/cart/presentation/cubit/cart_cubit.dart';
+
 final sl = GetIt.instance;
 
 Future<void> setupDependencies() async {
-  _setupCore();
+  await _setupCore();
   _setupAuth();
   _setupProducts();
+  _setupCart();
 }
 
-void _setupCore() {
-  // ✅ 1. Dio Client
+Future<void> _setupCore() async {
+  // ✅ 1. Shared Preferences
+  final sharedPreferences = await SharedPreferences.getInstance();
+  sl.registerLazySingleton<SharedPreferences>(() => sharedPreferences);
+
+  // ✅ 2. Dio Client
   sl.registerLazySingleton<Dio>(() => DioClient.createDio());
 }
 
@@ -88,23 +103,41 @@ void _setupProducts() {
 
   // ✅ 9. Cubits
   sl.registerFactory(
-    () => ProductCubit(
-      getProductsUseCase: sl(),
-      getProductByIdUseCase: sl(),
-    ),
+    () => ProductCubit(getProductsUseCase: sl(), getProductByIdUseCase: sl()),
   );
   sl.registerFactory(
-    () => ReviewCubit(
-      getReviewsUseCase: sl(),
-      addReviewUseCase: sl(),
-    ),
+    () => ReviewCubit(getReviewsUseCase: sl(), addReviewUseCase: sl()),
   );
-  sl.registerFactory(
-    () => CategoryCubit(
-      getCategoriesUseCase: sl(),
-    ),
+  sl.registerFactory(() => CategoryCubit(getCategoriesUseCase: sl()));
+  sl.registerFactory(() => CategoryProductsCubit(sl()));
+}
+
+void _setupCart() {
+  // ✅ 10. Cart Remote Data Source
+  sl.registerLazySingleton<CartRemoteDataSource>(
+    () => CartRemoteDataSource(sl()),
   );
+
+  // ✅ 11. Cart Repository
+  sl.registerLazySingleton<CartRepository>(
+    () => CartRepositoryImpl(remoteDataSource: sl()),
+  );
+
+  // ✅ 12. Use Cases
+  sl.registerLazySingleton(() => GetCartItemsUseCase(sl()));
+  sl.registerLazySingleton(() => AddToCartUseCase(sl()));
+  sl.registerLazySingleton(() => RemoveFromCartUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateCartQuantityUseCase(sl()));
+  sl.registerLazySingleton(() => ClearCartUseCase(sl()));
+
+  // ✅ 13. Cubit
   sl.registerFactory(
-    () => CategoryProductsCubit(sl()),
+    () => CartCubit(
+      getCartItems: sl(),
+      addToCart: sl(),
+      removeFromCart: sl(),
+      updateQuantity: sl(),
+      clearCart: sl(),
+    ),
   );
 }
