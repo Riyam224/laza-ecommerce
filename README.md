@@ -209,7 +209,7 @@ lib/
 
 ### State Management
 - **flutter_bloc** (^9.1.1) - BLoC/Cubit pattern for state management
-- **provider** (^6.1.2) - Additional state management support
+
 
 ### Networking
 - **dio** (^5.9.0) - HTTP client for API calls
