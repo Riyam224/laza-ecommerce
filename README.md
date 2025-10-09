@@ -72,7 +72,11 @@ A complete Flutter e-commerce application implementing authentication, product b
   - Icon buttons with background
   - Back button
   - Search bar
-- **Smooth Transitions** - Animated route transitions
+- **Smooth Animations** - Enhanced user experience with animations:
+  - Slide and fade transition from home to product details screen
+  - Interactive cart item animations on tap
+  - Carousel slider for payment cards with smooth transitions
+  - Animated route transitions throughout the app
 - **Error Handling** - User-friendly error messages and retry options
 
 ## 🏗️ Architecture
@@ -955,6 +959,19 @@ Future<Either<Failure, ProductEntity>> getProduct(String id) async {
 ![Search Demo](screenshots/demo2.gif)
 
 *Real-time product search with dynamic filtering - type in the search bar to instantly filter products by name*
+
+</div>
+
+### Smooth Animations & Interactions
+
+<div align="center">
+
+![Animations Demo](screenshots/demo3.gif)
+
+*Interactive animations including:*
+- *Slide & fade transition from home to product details*
+- *Cart item tap animations for better user feedback*
+- *Payment card carousel with smooth swipe transitions*
 
 </div>
 
