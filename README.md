@@ -29,7 +29,7 @@ A complete Flutter e-commerce application implementing authentication, product b
 - **User Profile** - Get user information
 
 ### Home & Products
-- **Product Catalog** - Browse all available products with pagination
+- **Product Catalog** - Browse all available products
 - **Product Search** - Search products by name or keyword with real-time filtering
 - **Product Filter** - Filter products dynamically in search bar as you type
 - **Product Details** - View detailed product information:
@@ -246,7 +246,7 @@ lib/
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Riyam224/laza-ecommerce.git
    cd laza-ecommerce
    ```
 
