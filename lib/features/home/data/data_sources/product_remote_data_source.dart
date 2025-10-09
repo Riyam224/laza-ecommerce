@@ -1,11 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:laza/core/networking/api_constants.dart';
 import 'package:laza/features/home/data/models/category_response.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:laza/features/home/data/models/product_model.dart';
 
 part 'product_remote_data_source.g.dart';
 
-@RestApi(baseUrl: "https://accessories-eshop.runasp.net/api/")
+@RestApi(baseUrl: ApiConstants.baseUrl)
 abstract class ProductRemoteDataSource {
   factory ProductRemoteDataSource(Dio dio, {String baseUrl}) =
       _ProductRemoteDataSource;
