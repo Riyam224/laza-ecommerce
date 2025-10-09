@@ -582,6 +582,16 @@ Images stored in `assets/images/`:
 - Payment icons (Visa, Mastercard, PayPal)
 - Illustrations (onboarding, order confirmation, etc.)
 
+**Asset Path Generation**: Using `flutter_assets` extension to automatically generate asset path constants:
+```yaml
+flutter_assets:
+  assets_path: assets/images/
+  output_path: lib/core/constants/
+  filename: assets.dart
+  field_prefix: resource
+```
+This generates type-safe asset references in [lib/core/constants/assets.dart](lib/core/constants/assets.dart), eliminating hardcoded string paths and preventing runtime errors from typos.
+
 ## 🔐 Authentication Flow
 
 ### Login Flow
