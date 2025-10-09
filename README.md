@@ -1,6 +1,20 @@
 # Laza - E-commerce Application
 
+<div align="center">
+
+![Splash Screen](screenshots/splash.png)
+
 A complete Flutter e-commerce application implementing authentication, product browsing, shopping cart, reviews, and payment features with clean architecture principles.
+
+[![Flutter](https://img.shields.io/badge/Flutter-3.9.2+-02569B?logo=flutter)](https://flutter.dev)
+[![Dart](https://img.shields.io/badge/Dart-3.9.2+-0175C2?logo=dart)](https://dart.dev)
+[![License](https://img.shields.io/badge/License-Private-red.svg)](LICENSE)
+
+[Features](#-features) • [Architecture](#-architecture) • [Setup](#-setup-instructions) • [Screenshots](#-screenshots) • [Demo](#-demo)
+
+</div>
+
+---
 
 ## 📱 Features
 
@@ -772,14 +786,180 @@ Future<Either<Failure, ProductEntity>> getProduct(String id) async {
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
+## 📷 Screenshots
+
+### Onboarding & Authentication
+
+<table>
+  <tr>
+    <td><img src="screenshots/onboarding.png" alt="Onboarding" width="250"/></td>
+    <td><img src="screenshots/loginOptions.png" alt="Login Options" width="250"/></td>
+    <td><img src="screenshots/login.png" alt="Login" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Onboarding</b></td>
+    <td align="center"><b>Login Options</b></td>
+    <td align="center"><b>Login</b></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="screenshots/signup.png" alt="Sign Up" width="250"/></td>
+    <td><img src="screenshots/otpVrerification.png" alt="OTP Verification" width="250"/></td>
+    <td><img src="screenshots/newPassword.png" alt="New Password" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Sign Up</b></td>
+    <td align="center"><b>OTP Verification</b></td>
+    <td align="center"><b>New Password</b></td>
+  </tr>
+</table>
+
+### Home & Products
+
+<table>
+  <tr>
+    <td><img src="screenshots/home.png" alt="Home" width="250"/></td>
+    <td><img src="screenshots/details.png" alt="Product Details" width="250"/></td>
+    <td><img src="screenshots/CategoryProducts.png" alt="Category Products" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Home Screen</b></td>
+    <td align="center"><b>Product Details</b></td>
+    <td align="center"><b>Category Products</b></td>
+  </tr>
+</table>
+
+### Reviews & Cart
+
+<table>
+  <tr>
+    <td><img src="screenshots/reviews.png" alt="Reviews" width="250"/></td>
+    <td><img src="screenshots/addReview.png" alt="Add Review" width="250"/></td>
+    <td><img src="screenshots/cart.png" alt="Cart" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Product Reviews</b></td>
+    <td align="center"><b>Add Review</b></td>
+    <td align="center"><b>Shopping Cart</b></td>
+  </tr>
+</table>
+
+### Payment & Order
+
+<table>
+  <tr>
+    <td><img src="screenshots/address.png" alt="Address" width="250"/></td>
+    <td><img src="screenshots/payment.png" alt="Payment" width="250"/></td>
+    <td><img src="screenshots/addNewCard.png" alt="Add New Card" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Delivery Address</b></td>
+    <td align="center"><b>Payment Methods</b></td>
+    <td align="center"><b>Add New Card</b></td>
+  </tr>
+</table>
+
+<table>
+  <tr>
+    <td><img src="screenshots/orderConfirmed.png" alt="Order Confirmed" width="250"/></td>
+    <td><img src="screenshots/drawer.png" alt="Drawer" width="250"/></td>
+  </tr>
+  <tr>
+    <td align="center"><b>Order Confirmed</b></td>
+    <td align="center"><b>Navigation Drawer</b></td>
+  </tr>
+</table>
+
+## 🎬 Demo
+
+![App Demo](screenshots/demo.gif)
+
+*Complete app walkthrough showing all features in action*
+
+## 📋 Requirements
+
+- **Flutter SDK**: 3.9.2 or higher
+- **Dart SDK**: 3.9.2 or higher
+- **IDE**: Android Studio, VS Code, or IntelliJ IDEA
+- **Platforms**: iOS 12.0+, Android 5.0+ (API 21+)
+- **Internet Connection**: Required for API calls
+
+## 🔧 Configuration
+
+### Environment Setup
+
+1. **Flutter Installation**
+   ```bash
+   # Verify Flutter installation
+   flutter --version
+
+   # Check for issues
+   flutter doctor
+   ```
+
+2. **IDE Setup**
+   - Install Flutter and Dart plugins
+   - Enable Dart analysis
+   - Configure code formatter
+
+### API Configuration
+
+The app connects to a REST API backend. Configuration is in [lib/core/networking/api_constants.dart](lib/core/networking/api_constants.dart):
+
+```dart
+class ApiConstants {
+  static const String baseUrl = 'https://accessories-eshop.runasp.net/api/';
+  static const Duration connectionTimeout = Duration(seconds: 30);
+  static const Duration receiveTimeout = Duration(seconds: 30);
+}
+```
+
+### Local Storage
+
+The app uses **SharedPreferences** for local data persistence:
+- Authentication tokens (access & refresh tokens)
+- User preferences
+- Cart data (offline mode)
+
+Configuration in [lib/core/shared_prefs.dart](lib/core/shared_prefs.dart)
+
+### Code Generation Configuration
+
+**build.yaml** (if needed):
+```yaml
+targets:
+  $default:
+    builders:
+      json_serializable:
+        options:
+          explicit_to_json: true
+```
+
 ## 📄 License
 
 This project is part of the Flutter Mentorship program.
+
+## 👨‍💻 Author
+
+**Radhi**
+Flutter Developer | Mentorship Program Week 4
 
 ## 📧 Contact
 
 For questions or issues, please open an issue in the repository.
 
+## 🙏 Acknowledgments
+
+- Flutter & Dart teams for the amazing framework
+- API backend: [accessories-eshop.runasp.net](https://accessories-eshop.runasp.net)
+- All open-source package contributors
+
 ---
 
 **Built with ❤️ using Flutter and Clean Architecture**
+
+<div align="center">
+  <sub>Made with Flutter • Clean Architecture • BLoC Pattern</sub>
+</div>
