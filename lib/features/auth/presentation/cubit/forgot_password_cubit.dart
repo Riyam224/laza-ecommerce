@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/auth/domain/entities/forgot_password_request_entity.dart';
 import 'package:laza/features/auth/domain/entities/verify_otp_request_entity.dart';
 import 'package:laza/features/auth/domain/entities/reset_password_request_entity.dart';

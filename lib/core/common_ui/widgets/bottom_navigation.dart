@@ -1,7 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 
 class BottomNavWidget extends StatefulWidget {
   const BottomNavWidget({super.key});

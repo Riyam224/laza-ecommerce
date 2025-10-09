@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 
 class ProductsSection extends StatelessWidget {

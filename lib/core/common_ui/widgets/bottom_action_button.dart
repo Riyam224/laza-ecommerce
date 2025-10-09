@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 
 class BottomActionButton extends StatelessWidget {
   final String text;

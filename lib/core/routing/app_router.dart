@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laza/core/di.dart';
+import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/routes.dart';
 import 'package:laza/features/address/presentation/screen/address_screen.dart';
 import 'package:laza/features/auth/presentation/cubit/register_cubit.dart';
@@ -29,7 +29,7 @@ class RouteGenerator {
     errorBuilder: (context, state) =>
         const Scaffold(body: Center(child: Text('404 Not Found'))),
     // todo initial route
-    initialLocation: AppRoutes.splash,
+    initialLocation: AppRoutes.home,
     routes: [
       GoRoute(
         path: AppRoutes.splash,

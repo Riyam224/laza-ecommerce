@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/domain/use_cases/get_products_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/get_product_by_id_usecase.dart';
@@ -16,7 +16,7 @@ class ProductCubit extends Cubit<ProductState> {
     required this.getProductByIdUseCase,
   }) : super(ProductInitial());
 
-  // 🟣 Fetch all products
+  //  Fetch all products
   Future<void> getProducts() async {
     emit(ProductLoading());
     try {
@@ -84,7 +84,7 @@ class ProductCubit extends Cubit<ProductState> {
         final response = e.response;
         final data = response?.data;
 
-        // ✅ Handle server messages precisely
+        //  Handle server messages precisely
         if (data is Map<String, dynamic>) {
           if (data.containsKey('message')) return data['message'];
 

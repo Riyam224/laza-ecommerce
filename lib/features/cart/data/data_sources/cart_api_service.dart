@@ -8,7 +8,7 @@ part 'cart_api_service.g.dart';
 abstract class CartApiService {
   factory CartApiService(Dio dio, {String baseUrl}) = _CartApiService;
 
-  // ✅ FIX: The API returns a CartResponseModel, not a list
+ 
   @GET('/api/cart')
   Future<CartResponseModel> getCart();
 

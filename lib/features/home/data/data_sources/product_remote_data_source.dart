@@ -10,7 +10,7 @@ abstract class ProductRemoteDataSource {
   factory ProductRemoteDataSource(Dio dio, {String baseUrl}) =
       _ProductRemoteDataSource;
 
-  // ✅ FIXED return type
+  //  FIXED return type
   @GET("products")
   Future<HttpResponse<dynamic>> getProducts(
     @Queries() Map<String, dynamic> queries,

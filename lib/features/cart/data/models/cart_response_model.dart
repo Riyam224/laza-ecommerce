@@ -7,7 +7,7 @@ part 'cart_response_model.g.dart';
 class CartResponseModel {
   final String? cartId;
 
-  // ✅ Use correct JSON key: "cartItems"
+  //  Use correct JSON key: "cartItems"
   @JsonKey(name: 'cartItems', defaultValue: [])
   final List<CartItemModel> cartItems;
 

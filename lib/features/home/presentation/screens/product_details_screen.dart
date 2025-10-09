@@ -5,8 +5,8 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/core/di.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/di/di.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/cart/domain/entities/cart_item_entity.dart';
 import 'package:laza/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:laza/features/cart/presentation/cubit/cart_state.dart';
@@ -121,7 +121,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               if (state is ProductDetailLoaded) {
                 final product = state.product;
 
-                // ✅ Use the same cover image 4 times for thumbnails
+              
                 final List<String> productImages = List.filled(
                   4,
                   product.coverPictureUrl,

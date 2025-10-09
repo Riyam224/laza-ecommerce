@@ -32,6 +32,6 @@ class ReviewModel {
     comment: comment,
     rating: rating,
     date: createdAt,
-    userPicture: userPicture, // ✅ added here
+    userPicture: userPicture, 
   );
 }

@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 
 class ApiErrorHandler {
   /// Converts Dio errors or generic exceptions into readable messages
@@ -34,10 +34,10 @@ class ApiErrorHandler {
     final data = response?.data;
 
     if (data is Map<String, dynamic>) {
-      // ✅ If API returns a "message" field
+      // todo If API returns a "message" field
       if (data.containsKey('message')) return data['message'];
 
-      // ✅ If API returns structured validation errors
+      //todo  If API returns structured validation errors
       if (data['errors'] is Map<String, dynamic>) {
         final errors = data['errors'];
 

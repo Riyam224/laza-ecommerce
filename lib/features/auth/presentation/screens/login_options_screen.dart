@@ -13,7 +13,7 @@ class LoginOptionsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
 
-      // 🟣 Button pinned to bottom
+      //  Button pinned to bottom
       bottomNavigationBar: BottomActionButton(
         text: "Create an Account",
         onPressed: () {
@@ -48,7 +48,7 @@ class LoginOptionsScreen extends StatelessWidget {
               // todo
               const SizedBox(height: 180),
 
-              // 🔵 Facebook Button
+              //  Facebook Button
               SocialButton(
                 color: const Color(0xFF4267B2),
                 text: "Facebook",
@@ -57,7 +57,7 @@ class LoginOptionsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // 🔷 Twitter Button
+              //  Twitter Button
               SocialButton(
                 color: const Color(0xFF1DA1F2),
                 text: "Twitter",
@@ -66,7 +66,7 @@ class LoginOptionsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
 
-              // 🔴 Google Button
+              //  Google Button
               SocialButton(
                 color: const Color(0xFFDB4437),
                 text: "Google",

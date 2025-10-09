@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:laza/core/di.dart';
+import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/app_router.dart';
-import 'package:laza/core/theming/app_themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,7 +15,7 @@ class LazaApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: AppThemes.lightTheme,
+      // theme: AppThemes.lightTheme,
       routerConfig: RouteGenerator.mainRoutingInOurApp,
     );
   }

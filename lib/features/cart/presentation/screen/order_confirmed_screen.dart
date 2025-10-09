@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 
 class OrderConfirmedScreen extends StatelessWidget {
   const OrderConfirmedScreen({super.key});
@@ -89,7 +89,9 @@ class OrderConfirmedScreen extends StatelessWidget {
                 width: double.infinity,
                 height: 55,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    GoRouter.of(context).go('/cart');
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFF6F7FB),
                     elevation: 0,

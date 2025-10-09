@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/home/presentation/cubit/product_cubit/product_cubit.dart';
 
 class SearchBarWidget extends StatefulWidget {

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/home/domain/entities/review_entity.dart';
 import 'package:laza/features/home/domain/use_cases/add_review_usecase.dart';
 import 'package:laza/features/home/domain/use_cases/get_reviews_usecase.dart';
@@ -13,7 +13,7 @@ class ReviewCubit extends Cubit<ReviewState> {
   ReviewCubit({required this.getReviewsUseCase, required this.addReviewUseCase})
     : super(ReviewInitial());
 
-  // 🟣 Fetch all reviews for a product
+  //  Fetch all reviews for a product
   Future<void> getReviews(String productId) async {
     emit(ReviewLoading());
     try {
@@ -26,11 +26,11 @@ class ReviewCubit extends Cubit<ReviewState> {
     }
   }
 
-  // 🟢 Post a new review
+  //  Post a new review
   Future<void> postReview(String productId, ReviewEntity review) async {
     emit(ReviewPosting());
     try {
-      // ✅ Convert rating to int before sending
+      //  Convert rating to int before sending
       final fixedReview = ReviewEntity(
         userName: review.userName,
         comment: review.comment,
@@ -40,7 +40,7 @@ class ReviewCubit extends Cubit<ReviewState> {
       await addReviewUseCase(productId, fixedReview);
       emit(ReviewPosted("✅ Review added successfully!"));
 
-      // 🔄 Refresh reviews immediately
+      // Refresh reviews immediately
       await getReviews(productId);
     } on DioException catch (e) {
       emit(ReviewError(_handleDioError(e)));

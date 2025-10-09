@@ -1,5 +1,4 @@
 import 'package:laza/features/auth/data/models/register/register_request_model.dart';
-import 'package:laza/features/auth/data/models/user/user_model.dart';
 import 'package:laza/features/auth/domain/entities/register_response_entity.dart';
 import 'package:laza/features/auth/domain/entities/login_request_entity.dart';
 import 'package:laza/features/auth/domain/entities/login_response_entity.dart';
@@ -13,5 +12,4 @@ abstract class AuthRepository {
   Future<void> forgotPassword(ForgotPasswordRequestEntity request);
   Future<void> verifyOtp(VerifyOtpRequestEntity request);
   Future<void> resetPassword(ResetPasswordRequestEntity request);
-  Future<UserModel> getUserInfo();
 }

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/home/domain/use_cases/get_categories_usecase.dart';
 import 'category_state.dart';
 

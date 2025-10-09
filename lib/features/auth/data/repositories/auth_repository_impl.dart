@@ -1,11 +1,9 @@
-
 import 'package:laza/features/auth/data/data_sources/auth_api_service.dart';
 import 'package:laza/features/auth/data/models/login/login_request_model.dart';
 import 'package:laza/features/auth/data/models/register/register_request_model.dart';
 import 'package:laza/features/auth/data/models/forgot_password/forgot_password_request_model.dart';
 import 'package:laza/features/auth/data/models/forgot_password/verify_otp_request_model.dart';
 import 'package:laza/features/auth/data/models/forgot_password/reset_password_request_model.dart';
-import 'package:laza/features/auth/data/models/user/user_model.dart';
 import 'package:laza/features/auth/domain/entities/register_response_entity.dart';
 import 'package:laza/features/auth/domain/entities/login_request_entity.dart';
 import 'package:laza/features/auth/domain/entities/login_response_entity.dart';
@@ -54,10 +52,5 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> resetPassword(ResetPasswordRequestEntity request) async {
     final requestModel = ResetPasswordRequestModel.fromEntity(request);
     await api.resetPassword(requestModel.toJson());
-  }
-
-  @override
-  Future<UserModel> getUserInfo() async {
-    return await api.getUserInfo();
   }
 }

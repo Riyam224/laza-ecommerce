@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/constants/assets.dart';
-import 'package:laza/core/di.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/di/di.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/home/domain/entities/review_entity.dart';
 import 'package:laza/features/home/presentation/cubit/review_cubit/review_cubit.dart';
 import 'package:laza/features/home/presentation/cubit/review_cubit/review_state.dart';
@@ -34,11 +34,9 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
           child: BlocConsumer<ReviewCubit, ReviewState>(
             listener: (context, state) {
               if (state is ReviewPosted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                  ),
-                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text(state.message)));
                 GoRouter.of(context).pop();
               } else if (state is ReviewError) {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -171,43 +169,46 @@ class _AddReviewScreenState extends State<AddReviewScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 50),
                         ],
                       ),
                     ),
                   ),
 
                   // 🟣 Submit Button
-                  BottomActionButton(
-                    backgroundColor: AppColors.primaryColor,
-                    text: isLoading ? 'Submitting...' : 'Submit Review',
-                    onPressed: isLoading
-                        ? null
-                        : () {
-                            FocusScope.of(context).unfocus(); // hide keyboard
-                            final name = nameController.text.trim();
-                            final experience = experienceController.text.trim();
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: BottomActionButton(
+                      backgroundColor: AppColors.primaryColor,
+                      text: isLoading ? 'Submitting...' : 'Submit Review',
+                      onPressed: isLoading
+                          ? null
+                          : () {
+                              FocusScope.of(context).unfocus(); // hide keyboard
+                              final name = nameController.text.trim();
+                              final experience = experienceController.text
+                                  .trim();
 
-                            if (name.isEmpty || experience.isEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('Please fill all fields'),
-                                ),
+                              if (name.isEmpty || experience.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Please fill all fields'),
+                                  ),
+                                );
+                                return;
+                              }
+
+                              final review = ReviewEntity(
+                                userName: name,
+                                comment: experience,
+                                rating: rating,
                               );
-                              return;
-                            }
 
-                            final review = ReviewEntity(
-                              userName: name,
-                              comment: experience,
-                              rating: rating,
-                            );
-
-                            context.read<ReviewCubit>().postReview(
-                              widget.productId,
-                              review,
-                            );
-                          },
+                              context.read<ReviewCubit>().postReview(
+                                widget.productId,
+                                review,
+                              );
+                            },
+                    ),
                   ),
                 ],
               );

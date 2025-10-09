@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/domain/use_cases/get_products_by_category_usecase.dart';
 

@@ -1,63 +1,12 @@
-// // widgets/reviews_section.dart
-// import 'package:flutter/material.dart';
-// import 'package:go_router/go_router.dart';
-
-// class ReviewsSection extends StatelessWidget {
-//   final String productId;
-
-//   const ReviewsSection({super.key, required this.productId});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(horizontal: 20.0),
-//       child: Column(
-//         children: [
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               Text(
-//                 'Reviews',
-//                 style: TextStyle(
-//                   fontSize: 20,
-//                   fontWeight: FontWeight.bold,
-//                   color: Theme.of(context).textTheme.bodyLarge?.color,
-//                 ),
-//               ),
-//               GestureDetector(
-//                 onTap: () {
-//                   GoRouter.of(context).push('/reviews', extra: productId);
-//                 },
-//                 child: Text(
-//                   'View All',
-//                   style: TextStyle(color: Colors.grey[600], fontSize: 15),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           const SizedBox(height: 16),
-//           const ReviewCard(
-//             name: 'Ronald Richards',
-//             date: '13 Sep, 2020',
-//             rating: 4.8,
-//             review:
-//                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque malesuada eget vitae amet...',
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laza/core/di.dart';
+import 'package:laza/core/di/di.dart';
 import 'package:laza/features/home/presentation/cubit/review_cubit/review_cubit.dart';
 import 'package:laza/features/home/presentation/cubit/review_cubit/review_state.dart';
 
 /// -------------------------
-/// 🟣 Single Review Card
+///  Single Review Card
 /// -------------------------
 class ReviewCard extends StatelessWidget {
   final String? id;
@@ -65,7 +14,7 @@ class ReviewCard extends StatelessWidget {
   final String date;
   final double rating;
   final String review;
-  final String? userPicture; // ✅ add this
+  final String? userPicture; 
   final String? experience;
 
   const ReviewCard({
@@ -75,7 +24,7 @@ class ReviewCard extends StatelessWidget {
     required this.date,
     required this.rating,
     required this.review,
-    this.userPicture, // ✅ add this
+    this.userPicture,
     this.experience,
   });
 
@@ -187,7 +136,7 @@ class ReviewCard extends StatelessWidget {
 }
 
 /// -------------------------
-/// 🟣 Reviews Section (List)
+///  Reviews Section (List)
 /// -------------------------
 class ReviewsSection extends StatelessWidget {
   final String productId;
@@ -208,7 +157,7 @@ class ReviewsSection extends StatelessWidget {
               return _buildEmptyState(context);
             }
 
-            // ✅ Show up to 2 latest reviews
+            // Show up to 2 latest reviews
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Column(

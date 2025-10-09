@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/auth/data/models/register/register_request_model.dart';
 import 'package:laza/features/auth/domain/use_cases/register_usecase.dart';
 import 'register_state.dart';
@@ -18,7 +18,7 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(RegisterLoading());
 
     try {
-      // ✅ Split username into first & last name (safe fallback)
+      // Split username into first & last name (safe fallback)
       final parts = username
           .trim()
           .split(' ')
@@ -27,7 +27,7 @@ class RegisterCubit extends Cubit<RegisterState> {
       final firstName = parts.isNotEmpty ? parts.first : 'User';
       final lastName = parts.length > 1 ? parts.sublist(1).join(' ') : 'Name';
 
-      // ✅ Build request model
+      // Build request model
       final request = RegisterRequestModel(
         email: email.trim(),
         password: password.trim(),
@@ -35,10 +35,10 @@ class RegisterCubit extends Cubit<RegisterState> {
         lastName: lastName,
       );
 
-      // ✅ Call the use case
+      // Call the use case
       final result = await registerUseCase(request);
 
-      // ✅ Success state
+      // Success state
       emit(RegisterSuccess(result));
     } on DioException catch (e) {
       // 🧩 Centralized Dio error handling
@@ -68,7 +68,7 @@ class RegisterCubit extends Cubit<RegisterState> {
         final response = e.response;
         final data = response?.data;
 
-        // ✅ Handle server messages precisely
+        // Handle server messages precisely
         if (data is Map<String, dynamic>) {
           if (data.containsKey('message')) return data['message'];
 

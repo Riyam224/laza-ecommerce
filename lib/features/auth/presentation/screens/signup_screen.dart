@@ -5,8 +5,8 @@ import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_back_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_text_field.dart';
 import 'package:laza/core/routing/routes.dart';
-import 'package:laza/core/theming/app_colors.dart';
-import 'package:laza/core/utils/error_messages.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
+import 'package:laza/core/error/auth_error_msg.dart';
 import 'package:laza/features/auth/presentation/cubit/register_cubit.dart';
 import 'package:laza/features/auth/presentation/cubit/register_state.dart';
 
@@ -102,7 +102,7 @@ class _SignupScreenState extends State<SignupScreen> {
         return Scaffold(
           backgroundColor: Colors.white,
 
-          // 💜 Sign Up button at bottom
+          //  Sign Up button at bottom
           bottomNavigationBar: BottomActionButton(
             text: state is RegisterLoading ? "Loading..." : "Sign Up",
             backgroundColor: AppColors.primaryColor,

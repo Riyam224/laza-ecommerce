@@ -4,9 +4,9 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/bottom_action_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_back_button.dart';
 import 'package:laza/core/common_ui/widgets/custom_text_field.dart';
-import 'package:laza/core/di.dart';
+import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/routes.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/auth/presentation/cubit/forgot_password_cubit.dart';
 import 'package:laza/features/auth/presentation/cubit/forgot_password_state.dart';
 
@@ -117,7 +117,7 @@ class _NewPasswordContentState extends State<_NewPasswordContent> {
       child: Scaffold(
         backgroundColor: Colors.white,
 
-        // 💜 Bottom "Reset Password" button
+        //  Bottom "Reset Password" button
         bottomNavigationBar: BlocBuilder<ForgotPasswordCubit, ForgotPasswordState>(
           builder: (context, state) {
             final isLoading = state is ResetPasswordLoading;

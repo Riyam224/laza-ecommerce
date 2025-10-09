@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:laza/core/di.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/di/di.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
 import 'package:laza/features/home/presentation/cubit/category_products/category_products_cubit.dart';
 import 'package:laza/features/home/presentation/widgets/home_widgets/home_custom_header.dart';

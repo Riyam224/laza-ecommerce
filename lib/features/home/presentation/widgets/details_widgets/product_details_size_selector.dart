@@ -1,7 +1,7 @@
 
 // widgets/size_selector.dart
 import 'package:flutter/material.dart';
-import 'package:laza/core/theming/app_colors.dart';
+import 'package:laza/core/utils/theming/app_colors.dart';
 
 class SizeSelector extends StatelessWidget {
   final List<String> sizes;

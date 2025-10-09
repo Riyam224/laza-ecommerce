@@ -4,7 +4,7 @@ class ReviewEntity {
   final String comment;
   final num rating;
   final String? date;
-  final String? userPicture; // ✅ add this field
+  final String? userPicture; 
 
   ReviewEntity({
     this.id,
@@ -12,6 +12,6 @@ class ReviewEntity {
     required this.comment,
     required this.rating,
     this.date,
-    this.userPicture, // ✅ include it in constructor
+    this.userPicture, 
   });
 }

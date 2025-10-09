@@ -11,7 +11,7 @@ class ProductRepositoryImpl implements ProductRepository {
 
   ProductRepositoryImpl(this.remoteDataSource);
 
-  // ✅ Get all products
+  // Get all products
   @override
   Future<List<ProductEntity>> getProducts() async {
     final queries = {"page": 1, "pageSize": 20};
@@ -28,20 +28,20 @@ class ProductRepositoryImpl implements ProductRepository {
     return products.map((p) => p.toEntity()).toList();
   }
 
-  // ✅ Get single product details by ID
+  // Get single product details by ID
   @override
   Future<ProductEntity> getProductById(String id) async {
     final product = await remoteDataSource.getProductById(id);
     return product.toEntity();
   }
 
-  // ✅ Get reviews for a product
+  // Get reviews for a product
   @override
   Future<List<ReviewEntity>> getReviews(String productId) async {
     final httpResponse = await remoteDataSource.getReviews(productId, 1, 10);
     final data = httpResponse.data as Map<String, dynamic>;
 
-    // ✅ Navigate to nested structure
+    // Navigate to nested structure
     final items = data['reviews']?['items'] as List<dynamic>? ?? [];
 
     final reviews = items
@@ -51,25 +51,25 @@ class ProductRepositoryImpl implements ProductRepository {
     return reviews.map((r) => r.toEntity()).toList();
   }
 
-  // ✅ Add a new review for a product
+  // Add a new review for a product
   @override
   Future<void> addReview(String productId, ReviewEntity review) async {
     final body = {
       'userName': review.userName,
       'comment': review.comment,
-      'rating': review.rating.toInt(), // ✅ convert here, not in the entity
+      'rating': review.rating.toInt(), 
     };
     await remoteDataSource.addReview(productId, body);
   }
 
-  // ✅ Get all categories
+  // Get all categories
   @override
   Future<List<CategoryEntity>> getCategories() async {
     try {
       // 🚀 Directly returns CategoryResponse, not HttpResponse
       final response = await remoteDataSource.getCategories();
 
-      // ✅ response.categories is already a List<CategoryModel>
+      // response.categories is already a List<CategoryModel>
       return response.categories.map((e) => e.toEntity()).toList();
     } catch (e, s) {
       // Optional: add logging
