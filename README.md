@@ -30,7 +30,8 @@ A complete Flutter e-commerce application implementing authentication, product b
 
 ### Home & Products
 - **Product Catalog** - Browse all available products with pagination
-- **Product Search** - Search products by name or keyword
+- **Product Search** - Search products by name or keyword with real-time filtering
+- **Product Filter** - Filter products dynamically in search bar as you type
 - **Product Details** - View detailed product information:
   - Product images with carousel slider
   - Price, description, and specifications
@@ -232,35 +233,98 @@ lib/
 - **retrofit_generator** (^10.0.6) - Retrofit implementation generation
 - **flutter_lints** (^5.0.0) - Linting rules
 
-## 🚀 Setup Instructions
+## 🚀 How to Run the App
 
 ### Prerequisites
-- Flutter SDK (^3.9.2)
-- Dart SDK (^3.9.2)
-- Android Studio / VS Code
-- iOS simulator / Android emulator
+- **Flutter SDK**: Version 3.9.2 or higher
+- **Dart SDK**: Version 3.9.2 or higher
+- **IDE**: Android Studio, VS Code, or IntelliJ IDEA with Flutter plugins
+- **Device**: iOS simulator, Android emulator, or physical device
+- **Internet Connection**: Required for API calls
 
-### Installation
+### Step-by-Step Installation
 
-1. Clone the repository:
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd laza-ecommerce
+   ```
+
+2. **Verify Flutter installation**
+   ```bash
+   flutter doctor
+   ```
+   Ensure all checkmarks are green. Fix any issues before proceeding.
+
+3. **Install dependencies**
+   ```bash
+   flutter pub get
+   ```
+
+4. **Generate code for JSON serialization and Retrofit**
+   ```bash
+   dart run build_runner build --delete-conflicting-outputs
+   ```
+   This generates the necessary `.g.dart` files for JSON serialization and API services.
+
+5. **Check connected devices**
+   ```bash
+   flutter devices
+   ```
+
+6. **Run the app**
+
+   For development (debug mode):
+   ```bash
+   flutter run
+   ```
+
+   For specific device:
+   ```bash
+   # iOS Simulator
+   flutter run -d "iPhone 15 Pro"
+
+   # Android Emulator
+   flutter run -d emulator-5554
+
+   # Physical device
+   flutter run -d <device-id>
+   ```
+
+   For release mode (better performance):
+   ```bash
+   flutter run --release
+   ```
+
+7. **Hot Reload during development**
+   - Press `r` in the terminal to hot reload
+   - Press `R` to hot restart
+   - Press `q` to quit
+
+### Troubleshooting
+
+If you encounter build errors:
 ```bash
-git clone <repository-url>
-cd laza-ecommerce
-```
+# Clean the project
+flutter clean
 
-2. Install dependencies:
-```bash
+# Get dependencies again
 flutter pub get
-```
 
-3. Generate code for JSON serialization and Retrofit:
-```bash
+# Regenerate code
 dart run build_runner build --delete-conflicting-outputs
+
+# Run again
+flutter run
 ```
 
-4. Run the app:
+If code generation fails:
 ```bash
-flutter run
+# Try with cache deletion
+dart run build_runner build --delete-conflicting-outputs
+
+# Or watch mode for continuous generation
+dart run build_runner watch --delete-conflicting-outputs
 ```
 
 ## 🌐 API Configuration
@@ -874,9 +938,25 @@ Future<Either<Failure, ProductEntity>> getProduct(String id) async {
 
 ## 🎬 Demo
 
+### Full App Walkthrough
+
+<div align="center">
+
 ![App Demo](screenshots/demo.gif)
 
-*Complete app walkthrough showing all features in action*
+*Complete app walkthrough showing authentication, product browsing, cart, and payment features*
+
+</div>
+
+### Product Search & Filter
+
+<div align="center">
+
+![Search Demo](screenshots/demo2.gif)
+
+*Real-time product search with dynamic filtering - type in the search bar to instantly filter products by name*
+
+</div>
 
 ## 📋 Requirements
 
