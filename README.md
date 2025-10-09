@@ -33,7 +33,7 @@ A complete Flutter e-commerce application implementing authentication, product b
 - **Product Search** - Search products by name or keyword with real-time filtering
 - **Product Filter** - Filter products dynamically in search bar as you type
 - **Product Details** - View detailed product information:
-  - Product images with carousel slider
+  - Product images 
   - Price, description, and specifications
   - Size selection
   - Add to cart functionality
