@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/di/di.dart';
 import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/features/home/domain/entities/product_entity.dart';
@@ -195,6 +196,10 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // 🧠 if API returns null or empty image → use fallback asset
+    final String? imageUrl = product.coverPictureUrl;
+    final bool hasValidImage = imageUrl != null && imageUrl.trim().isNotEmpty;
+
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
@@ -203,17 +208,33 @@ class _ProductCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Image
+          // 🖼️ Product Image
           Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(16),
-                child: Image.network(
-                  product.coverPictureUrl,
-                  height: 170,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                child: hasValidImage
+                    ? Image.network(
+                        imageUrl,
+                        height: 170,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                        errorBuilder: (context, error, stackTrace) {
+                          // If network image fails (404, etc.)
+                          return Image.asset(
+                            Assets.resourceImagesProduct,
+                            height: 170,
+                            width: double.infinity,
+                            fit: BoxFit.cover,
+                          );
+                        },
+                      )
+                    : Image.asset(
+                        Assets.resourceImagesProduct,
+                        height: 170,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const Positioned(
                 top: 8,
@@ -228,7 +249,7 @@ class _ProductCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          // Name
+          // 🏷️ Name
           GestureDetector(
             onTap: () {
               (context).push('/productDetails', extra: product.id);
@@ -241,7 +262,7 @@ class _ProductCard extends StatelessWidget {
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
-                maxLines: 2,
+                maxLines: 1,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -249,7 +270,7 @@ class _ProductCard extends StatelessWidget {
 
           const SizedBox(height: 4),
 
-          // Price
+          // 💲 Price
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Text(

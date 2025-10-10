@@ -92,5 +92,4 @@ flutter_assets:
   output_path: lib/core/constants/
   filename: assets.dart
   field_prefix: resource
-  refix: resource
-  
+  refix: resourcerce

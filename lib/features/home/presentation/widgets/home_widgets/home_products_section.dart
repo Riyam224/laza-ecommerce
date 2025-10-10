@@ -52,7 +52,7 @@ class ProductsSection extends StatelessWidget {
               crossAxisCount: 2,
               crossAxisSpacing: 16,
               mainAxisSpacing: 16,
-              childAspectRatio: 0.7,
+              childAspectRatio: 0.72,
             ),
             itemCount: products.length,
             itemBuilder: (context, index) {
@@ -65,7 +65,8 @@ class ProductsSection extends StatelessWidget {
   }
 }
 
-// widgets/product_card.dart
+// todo
+
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
 
@@ -73,73 +74,90 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: AppColors.iconsBg,
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Stack(
-              children: [
-                Center(
-                  child: Image.network(
-                    product.coverPictureUrl,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return Image.asset(
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.iconsBg,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min, // 👈 avoids overflow
+        children: [
+          // 🖼️ Fixed image height
+          ClipRRect(
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+            child: AspectRatio(
+              aspectRatio: 1, // keeps all images same height
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: Image.network(
+                      product.coverPictureUrl,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Image.asset(
                         Assets.resourceImagesProduct,
                         fit: BoxFit.cover,
-                      );
-                    },
-                  ),
-                ),
-                Positioned(
-                  top: 12,
-                  right: 12,
-                  child: Container(
-                    width: 36,
-                    height: 36,
-                    decoration: const BoxDecoration(
-                      // color: Colors.white,
-                      shape: BoxShape.circle,
+                      ),
                     ),
-
-                    // todo click favorite icon
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
                     child: GestureDetector(
-                      onTap: () {},
-                      child: Padding(
-                        padding: const EdgeInsets.all(8),
+                      onTap: () {
+                        // TODO: Add favorite toggle
+                      },
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.8),
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(6),
                         child: Image.asset(Assets.resourceImagesHeart),
                       ),
                     ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // 📝 Text below image
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context.push('/productDetails', extra: product.id);
+                  },
+                  child: Text(
+                    product.name,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  '\$${product.price.toStringAsFixed(2)}',
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
             ),
           ),
-        ),
-        const SizedBox(height: 8),
-        // todo nav to product details
-        GestureDetector(
-          onTap: () {
-          (context).push('/productDetails', extra: product.id);
-          },
-          child: Text(
-            product.name,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500),
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          '\$${product.price.toStringAsFixed(2)}',
-          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
