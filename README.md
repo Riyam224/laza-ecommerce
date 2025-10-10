@@ -31,6 +31,14 @@ A complete Flutter e-commerce application implementing authentication, product b
   - Display user profile data (username, email, etc.)
   - Persistent user session management
   - Secure token-based authentication for user info requests
+- **Logout Integration** - Complete logout functionality with seamless UX:
+  - API-based logout with token invalidation
+  - Automatic local token cleanup
+  - Dynamic drawer UI (Logout button when authenticated, Login button when not)
+  - Loading states during logout process
+  - Automatic navigation to login screen after logout
+  - Success/error notifications with user feedback
+  - Session state management across the app
 
 ### Home & Products
 - **Product Catalog** - Browse all available products
@@ -69,7 +77,12 @@ A complete Flutter e-commerce application implementing authentication, product b
 - **Onboarding** - Welcome screen with gender selection
 - **Splash Screen** - App launch screen
 - **Bottom Navigation** - Easy navigation between main sections
-- **Custom Drawer** - Side menu for additional options
+- **Custom Drawer** - Smart side menu with dynamic authentication UI:
+  - User profile display when logged in
+  - Guest mode when not authenticated
+  - Context-aware buttons (Logout/Login based on auth state)
+  - Loading indicators during logout process
+  - Navigation to various app sections
 - **Custom Widgets** - Reusable UI components:
   - Custom text fields
   - Elevated buttons
@@ -81,7 +94,12 @@ A complete Flutter e-commerce application implementing authentication, product b
   - Interactive cart item animations on tap
   - Carousel slider for payment cards with smooth transitions
   - Animated route transitions throughout the app
+  - Loading states with circular progress indicators
 - **Error Handling** - User-friendly error messages and retry options
+- **Snackbar Notifications** - Instant feedback for user actions:
+  - Success messages (logout confirmation, etc.)
+  - Error messages with actionable details
+  - Auto-dismissing alerts
 
 ## 🏗️ Architecture
 
@@ -351,7 +369,8 @@ https://accessories-eshop.runasp.net/api/
 | POST | `/auth/forgot-password` | Send OTP to email |
 | POST | `/auth/validate-otp` | Verify OTP code |
 | POST | `/auth/reset-password` | Set new password |
-| GET | `/auth/user-info` | Get user information |
+| GET | `/auth/me` | Get authenticated user information |
+| POST | `/auth/logout` | Logout user and invalidate token |
 
 ### Product Endpoints
 
@@ -627,9 +646,23 @@ This generates type-safe asset references in [lib/core/constants/assets.dart](li
 7. **Session Persistence**: User info cached locally for offline access
 
 ### Forgot Password Flow
+
 1. **Email Entry** → Send OTP
 2. **OTP Verification** → Validate code
 3. **Password Reset** → Update password → Navigate to login
+
+### Logout Flow
+
+1. **User Action**: User clicks logout button in custom drawer
+2. **Loading State**: Logout button shows loading indicator
+3. **API Call**: `LogoutCubit` triggers `LogoutUseCase`
+4. **Token Invalidation**: API call to `POST /auth/logout` endpoint
+5. **Local Cleanup**: Clear access token from SharedPreferences
+6. **State Update**: Emit `LogoutSuccess` state
+7. **Navigation**: Automatically redirect to login screen
+8. **UI Update**: Drawer switches to show "Login" button instead
+9. **Feedback**: Success snackbar notification displayed
+10. **Session Clear**: User session completely cleared from app
 
 ## 🛍️ Shopping Flow
 
@@ -873,6 +906,236 @@ Future<Either<Failure, ProductEntity>> getProduct(String id) async {
 }
 ```
 
+## 🚪 Logout Implementation (Complete Guide)
+
+This section provides a detailed explanation of the logout feature implementation, demonstrating clean architecture principles.
+
+### Architecture Layers
+
+#### 1. Domain Layer
+
+**Use Case** - [lib/features/auth/domain/use_cases/logout_usecase.dart](lib/features/auth/domain/use_cases/logout_usecase.dart)
+
+```dart
+class LogoutUseCase {
+  final AuthRepository repository;
+
+  LogoutUseCase(this.repository);
+
+  Future<Either<Failure, void>> call() async {
+    // Call the API to logout
+    final result = await repository.logout();
+
+    // Clear local token regardless of API result
+    await clearToken();
+
+    return result;
+  }
+}
+```
+
+**Repository Interface** - [lib/features/auth/domain/repositories/auth_repository.dart](lib/features/auth/domain/repositories/auth_repository.dart:19)
+
+```dart
+abstract class AuthRepository {
+  // ... other methods
+  Future<Either<Failure, void>> logout();
+}
+```
+
+#### 2. Data Layer
+
+**API Service** - [lib/features/auth/data/data_sources/auth_api_service.dart](lib/features/auth/data/data_sources/auth_api_service.dart:58-59)
+
+```dart
+@RestApi(baseUrl: ApiConstants.baseUrl)
+abstract class AuthApiService {
+  factory AuthApiService(Dio dio, {String baseUrl}) = _AuthApiService;
+
+  @POST("auth/logout")
+  Future<void> logout();
+}
+```
+
+**Repository Implementation** - [lib/features/auth/data/repositories/auth_repository_impl.dart](lib/features/auth/data/repositories/auth_repository_impl.dart:108-118)
+
+```dart
+@override
+Future<Either<Failure, void>> logout() async {
+  try {
+    await api.logout();
+    return const Right(null);
+  } on DioException catch (e) {
+    return Left(ServerFailure(
+      message: _extractErrorMessage(e, 'Logout failed')
+    ));
+  } catch (e) {
+    return Left(ServerFailure(message: e.toString()));
+  }
+}
+```
+
+#### 3. Presentation Layer
+
+**States** - [lib/features/auth/presentation/cubit/logout/logout_state.dart](lib/features/auth/presentation/cubit/logout/logout_state.dart)
+
+```dart
+abstract class LogoutState extends Equatable {}
+
+class LogoutInitial extends LogoutState {}
+class LogoutLoading extends LogoutState {}
+class LogoutSuccess extends LogoutState {}
+
+class LogoutError extends LogoutState {
+  final String message;
+  const LogoutError(this.message);
+}
+```
+
+**Cubit** - [lib/features/auth/presentation/cubit/logout/logout_cubit.dart](lib/features/auth/presentation/cubit/logout/logout_cubit.dart)
+
+```dart
+class LogoutCubit extends Cubit<LogoutState> {
+  final LogoutUseCase logoutUseCase;
+
+  LogoutCubit(this.logoutUseCase) : super(LogoutInitial());
+
+  Future<void> logout() async {
+    emit(LogoutLoading());
+
+    final result = await logoutUseCase();
+
+    result.fold(
+      (failure) => emit(LogoutError(failure.message)),
+      (_) => emit(LogoutSuccess()),
+    );
+  }
+}
+```
+
+### UI Integration
+
+**Custom Drawer** - [lib/core/common_ui/widgets/custom_drawer.dart](lib/core/common_ui/widgets/custom_drawer.dart)
+
+The drawer implements dynamic UI switching based on authentication state:
+
+```dart
+MultiBlocProvider(
+  providers: [
+    BlocProvider(create: (context) => sl<UserInfoCubit>()..fetchUserInfo()),
+    BlocProvider(create: (context) => sl<LogoutCubit>()),
+  ],
+  child: BlocListener<LogoutCubit, LogoutState>(
+    listener: (context, state) {
+      if (state is LogoutSuccess) {
+        Navigator.of(context).pop(); // Close drawer
+        context.go(AppRoutes.login);  // Navigate to login
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Logged out successfully')),
+        );
+      } else if (state is LogoutError) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(state.message), backgroundColor: Colors.red),
+        );
+      }
+    },
+    child: Drawer(/* ... */),
+  ),
+)
+```
+
+**Dynamic Button Logic**:
+
+```dart
+BlocBuilder<UserInfoCubit, UserInfoState>(
+  builder: (context, userState) {
+    final isLoggedIn = userState is UserInfoSuccess;
+
+    return BlocBuilder<LogoutCubit, LogoutState>(
+      builder: (context, logoutState) {
+        if (isLoggedIn) {
+          // Show Logout button
+          return ListTile(
+            leading: logoutState is LogoutLoading
+                ? CircularProgressIndicator()
+                : Icon(Icons.logout, color: Colors.red),
+            title: Text(
+              logoutState is LogoutLoading ? 'Logging out...' : 'Logout'
+            ),
+            onTap: logoutState is LogoutLoading
+                ? null
+                : () => context.read<LogoutCubit>().logout(),
+          );
+        } else {
+          // Show Login button
+          return ListTile(
+            leading: Icon(Icons.login, color: AppColors.primaryColor),
+            title: Text('Login'),
+            onTap: () {
+              Navigator.of(context).pop();
+              context.go(AppRoutes.login);
+            },
+          );
+        }
+      },
+    );
+  },
+)
+```
+
+### Dependency Injection
+
+**Registration** - [lib/core/di/di.dart](lib/core/di/di.dart:83-90)
+
+```dart
+void _setupAuth() {
+  // ... other auth dependencies
+
+  // Use Case
+  sl.registerLazySingleton(() => LogoutUseCase(sl()));
+
+  // Cubit
+  sl.registerFactory(() => LogoutCubit(sl()));
+}
+```
+
+### Key Features
+
+1. **Clean Architecture**: Separation of concerns across domain, data, and presentation layers
+2. **State Management**: BLoC pattern for reactive UI updates
+3. **Error Handling**: Comprehensive error handling with Either pattern
+4. **User Feedback**: Loading states, success/error messages via snackbars
+5. **Token Management**: Automatic cleanup of stored tokens
+6. **Navigation**: Automatic redirect to login screen after logout
+7. **UI Responsiveness**: Disabled button during loading to prevent double-tap
+8. **Session Management**: Complete session cleanup from app and backend
+
+### Flow Diagram
+
+```
+User Clicks Logout
+       ↓
+LogoutCubit.logout()
+       ↓
+Emit LogoutLoading (UI shows spinner)
+       ↓
+LogoutUseCase.call()
+       ↓
+AuthRepository.logout()
+       ↓
+AuthApiService.logout() → API Call
+       ↓
+clearToken() → Remove from SharedPreferences
+       ↓
+Emit LogoutSuccess
+       ↓
+BlocListener catches success
+       ↓
+Close Drawer → Navigate to Login → Show Success Snackbar
+       ↓
+Drawer rebuilds with "Login" button
+```
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -999,6 +1262,23 @@ Future<Either<Failure, ProductEntity>> getProduct(String id) async {
 - *Slide & fade transition from home to product details*
 - *Cart item tap animations for better user feedback*
 - *Payment card carousel with smooth swipe transitions*
+
+</div>
+
+### User Authentication & Logout Flow
+
+<div align="center">
+
+![Logout Demo](screenshots/demo4.gif)
+
+*Complete authentication cycle demonstrating:*
+- *User profile display in custom drawer*
+- *Logout button with loading state*
+- *Token invalidation and session cleanup*
+- *Automatic navigation to login screen*
+- *Success notification feedback*
+- *Dynamic drawer UI switching (Logout ↔ Login button)*
+- *Login flow to restore authenticated state*
 
 </div>
 

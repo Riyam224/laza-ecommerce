@@ -54,4 +54,7 @@ abstract class AuthApiService {
   // todo
   @GET("auth/me")
   Future<UserModel> getUserInfo();
+
+  @POST("auth/logout")
+  Future<void> logout();
 }

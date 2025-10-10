@@ -104,4 +104,16 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(ServerFailure(message: e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> logout() async {
+    try {
+      await api.logout();
+      return const Right(null);
+    } on DioException catch (e) {
+      return Left(ServerFailure(message: _extractErrorMessage(e, 'Logout failed')));
+    } catch (e) {
+      return Left(ServerFailure(message: e.toString()));
+    }
+  }
 }

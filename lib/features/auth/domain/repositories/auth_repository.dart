@@ -16,4 +16,5 @@ abstract class AuthRepository {
   Future<Either<Failure, void>> verifyOtp(VerifyOtpRequestEntity request);
   Future<Either<Failure, void>> resetPassword(ResetPasswordRequestEntity request);
   Future<Either<Failure, UserEntity>> getUserInfo();
+  Future<Either<Failure, void>> logout();
 }

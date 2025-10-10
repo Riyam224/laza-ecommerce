@@ -1,11 +1,17 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:laza/core/common_ui/widgets/custom_icon_with_bg.dart';
 import 'package:laza/core/di/di.dart';
 import 'package:laza/core/utils/theming/app_colors.dart';
 import 'package:laza/core/constants/assets.dart';
+import 'package:laza/core/routing/routes.dart';
 import 'package:laza/features/auth/presentation/cubit/user_info/user_info_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/logout/logout_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/logout/logout_state.dart';
 import 'package:laza/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:laza/features/cart/presentation/screen/cart_screen.dart';
 import 'package:laza/features/home/presentation/screens/home_screen.dart';
@@ -20,7 +26,7 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
-  /// 🧪 Temporary test function to verify your token and /api/auth/me
+  // todo 🧪 Temporary test function to verify your token and /api/auth/me
   Future<void> testUserInfoApi() async {
     try {
       final prefs = await SharedPreferences.getInstance();
@@ -53,122 +59,199 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<UserInfoCubit>()..fetchUserInfo(),
-      child: Drawer(
-        backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomIconWithBg(
-                  iconImg: Assets.resourceImagesMenuDrawer,
-                  backgroundColor: AppColors.iconsBg,
-                  onTap: () async {
-                    Navigator.of(context).pop();
-                    await Future.delayed(const Duration(milliseconds: 150));
-                  },
-                ),
-                const SizedBox(height: 30),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<UserInfoCubit>()..fetchUserInfo()),
+        BlocProvider(create: (context) => sl<LogoutCubit>()),
+      ],
+      child: BlocListener<LogoutCubit, LogoutState>(
+        listener: (context, state) {
+          if (state is LogoutSuccess) {
+            // Close drawer
+            Navigator.of(context).pop();
+            // Navigate to login screen
+            context.go(AppRoutes.login);
+            // Show success message
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Logged out successfully'),
+                backgroundColor: Colors.green,
+                duration: Duration(seconds: 2),
+              ),
+            );
+          } else if (state is LogoutError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+                backgroundColor: Colors.red,
+                duration: const Duration(seconds: 3),
+              ),
+            );
+          }
+        },
+        child: Drawer(
+          backgroundColor: Theme.of(context).drawerTheme.backgroundColor,
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 45),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomIconWithBg(
+                    iconImg: Assets.resourceImagesMenuDrawer,
+                    backgroundColor: AppColors.iconsBg,
+                    onTap: () async {
+                      Navigator.of(context).pop();
+                      await Future.delayed(const Duration(milliseconds: 150));
+                    },
+                  ),
+                  const SizedBox(height: 30),
 
-                /// 👤 Profile Section
-                BlocBuilder<UserInfoCubit, UserInfoState>(
-                  builder: (context, state) {
-                    if (state is UserInfoLoading) {
-                      return const Row(
-                        children: [
-                          CircleAvatar(
-                            radius: 28,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          ),
-                          SizedBox(width: 12),
-                          Expanded(child: Text('Loading...')),
-                        ],
-                      );
-                    }
-
-                    if (state is UserInfoError) {
-                      final isAuthError =
-                          state.message.toLowerCase().contains(
-                            'unauthorized',
-                          ) ||
-                          state.message.toLowerCase().contains('401') ||
-                          state.message.toLowerCase().contains('token');
-
-                      if (isAuthError) {
-                        return _guestProfile(context);
+                  /// 👤 Profile Section
+                  BlocBuilder<UserInfoCubit, UserInfoState>(
+                    builder: (context, state) {
+                      if (state is UserInfoLoading) {
+                        return const Row(
+                          children: [
+                            CircleAvatar(
+                              radius: 28,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            SizedBox(width: 12),
+                            Expanded(child: Text('Loading...')),
+                          ],
+                        );
                       }
 
-                      return _errorProfile(context, state.message);
-                    }
+                      if (state is UserInfoError) {
+                        final isAuthError =
+                            state.message.toLowerCase().contains(
+                              'unauthorized',
+                            ) ||
+                            state.message.toLowerCase().contains('401') ||
+                            state.message.toLowerCase().contains('token');
 
-                    if (state is UserInfoSuccess) {
-                      final user = state.user;
-                      return _userProfile(
-                        context,
-                        user.fullName,
-                        user.email,
-                        user.profilePicture,
-                      );
-                    }
+                        if (isAuthError) {
+                          return _guestProfile(context);
+                        }
 
-                    return _guestProfile(context);
-                  },
-                ),
+                        return _errorProfile(context, state.message);
+                      }
 
-                const SizedBox(height: 80),
+                      if (state is UserInfoSuccess) {
+                        final user = state.user;
+                        return _userProfile(
+                          context,
+                          user.fullName,
+                          user.email,
+                          user.profilePicture,
+                        );
+                      }
 
-                /// 🧭 Drawer Menu Items
-                _drawerItem(
-                  context,
-                  Icons.production_quantity_limits_sharp,
-                  'Products Category',
-                  const HomeScreen(),
-                ),
-                _drawerItem(
-                  context,
-                  Icons.shopping_bag_outlined,
-                  'Order',
-                  const HomeScreen(),
-                ),
-                _drawerItem(
-                  context,
-                  Icons.shopping_cart_outlined,
-                  'Cart',
-                  const CartScreen(),
-                ),
-                _drawerItem(
-                  context,
-                  Icons.credit_card_outlined,
-                  'My Cards',
-                  const AddNewCardScreen(),
-                ),
-                _drawerItem(
-                  context,
-                  Icons.settings_outlined,
-                  'Settings',
-                  const HomeScreen(),
-                ),
-
-                const Spacer(),
-
-                /// 🚪 Logout
-                ListTile(
-                  leading: const Icon(Icons.logout, color: Colors.red),
-                  title: const Text(
-                    'Logout',
-                    style: TextStyle(
-                      color: Colors.red,
-                      fontWeight: FontWeight.w500,
-                    ),
+                      return _guestProfile(context);
+                    },
                   ),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
+
+                  const SizedBox(height: 80),
+
+                  /// 🧭 Drawer Menu Items
+                  _drawerItem(
+                    context,
+                    Icons.production_quantity_limits_sharp,
+                    'Products Category',
+                    const HomeScreen(),
+                  ),
+                  _drawerItem(
+                    context,
+                    Icons.shopping_bag_outlined,
+                    'Order',
+                    const HomeScreen(),
+                  ),
+                  _drawerItem(
+                    context,
+                    Icons.shopping_cart_outlined,
+                    'Cart',
+                    const CartScreen(),
+                  ),
+                  _drawerItem(
+                    context,
+                    Icons.credit_card_outlined,
+                    'My Cards',
+                    const AddNewCardScreen(),
+                  ),
+                  _drawerItem(
+                    context,
+                    Icons.settings_outlined,
+                    'Settings',
+                    const HomeScreen(),
+                  ),
+
+                  const Spacer(),
+
+                  /// 🚪 Auth Buttons (Logout / Login)
+                  BlocBuilder<UserInfoCubit, UserInfoState>(
+                    builder: (context, userState) {
+                      final isLoggedIn = userState is UserInfoSuccess;
+
+                      return BlocBuilder<LogoutCubit, LogoutState>(
+                        builder: (context, logoutState) {
+                          if (isLoggedIn) {
+                            // Show Logout button
+                            return ListTile(
+                              leading: logoutState is LogoutLoading
+                                  ? const SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor:
+                                            AlwaysStoppedAnimation<Color>(
+                                              Colors.red,
+                                            ),
+                                      ),
+                                    )
+                                  : const Icon(Icons.logout, color: Colors.red),
+                              title: Text(
+                                logoutState is LogoutLoading
+                                    ? 'Logging out...'
+                                    : 'Logout',
+                                style: const TextStyle(
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onTap: logoutState is LogoutLoading
+                                  ? null
+                                  : () {
+                                      context.read<LogoutCubit>().logout();
+                                    },
+                            );
+                          } else {
+                            // Show Login button
+                            return ListTile(
+                              leading: const Icon(
+                                Icons.login,
+                                color: AppColors.primaryColor,
+                              ),
+                              title: const Text(
+                                'Login',
+                                style: TextStyle(
+                                  color: AppColors.primaryColor,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              onTap: () {
+                                Navigator.of(context).pop();
+                                context.go(AppRoutes.login);
+                              },
+                            );
+                          }
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
         ),
