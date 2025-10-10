@@ -8,8 +8,8 @@ import 'package:laza/core/constants/assets.dart';
 import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/routes.dart';
 import 'package:laza/core/utils/theming/app_colors.dart';
-import 'package:laza/features/auth/presentation/cubit/forgot_password_cubit.dart';
-import 'package:laza/features/auth/presentation/cubit/forgot_password_state.dart';
+import 'package:laza/features/auth/presentation/cubit/forget_password/forgot_password_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/forget_password/forgot_password_state.dart';
 
 class ForgotPasswordScreen extends StatelessWidget {
   const ForgotPasswordScreen({super.key});

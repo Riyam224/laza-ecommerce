@@ -9,10 +9,7 @@ class DioClient {
         baseUrl: ApiConstants.baseUrl,
         connectTimeout: const Duration(seconds: 30),
         receiveTimeout: const Duration(seconds: 30),
-        headers: {
-          'Accept': 'application/json',
-          
-        },
+        headers: {'Accept': 'application/json'},
       ),
     );
 
@@ -24,8 +21,15 @@ class DioClient {
             final prefs = await SharedPreferences.getInstance();
             final token = prefs.getString('access_token');
 
+            print('🪪 [DioClient] Token read before request: $token');
+            print('🌐 Request → ${options.method} ${options.uri}');
+
             if (token != null && token.isNotEmpty) {
               options.headers['Authorization'] = 'Bearer $token';
+            } else {
+              print(
+                '⚠️ No token found — request will go without Authorization header',
+              );
             }
           } catch (e) {
             print('⚠️ Failed to read token from SharedPreferences: $e');

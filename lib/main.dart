@@ -4,6 +4,7 @@ import 'package:laza/core/routing/app_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await setupDependencies();
   runApp(const LazaApp());
 }

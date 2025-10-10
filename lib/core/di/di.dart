@@ -14,10 +14,11 @@ import 'package:laza/features/auth/domain/use_cases/login_usecase.dart';
 import 'package:laza/features/auth/domain/use_cases/forgot_password_usecase.dart';
 import 'package:laza/features/auth/domain/use_cases/verify_otp_usecase.dart';
 import 'package:laza/features/auth/domain/use_cases/reset_password_usecase.dart';
-import 'package:laza/features/auth/domain/use_cases/GetUserInfoUseCase.dart';
-import 'package:laza/features/auth/presentation/cubit/register_cubit.dart';
-import 'package:laza/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:laza/features/auth/presentation/cubit/forgot_password_cubit.dart';
+import 'package:laza/features/auth/domain/use_cases/get_user_info_usecase.dart';
+import 'package:laza/features/auth/presentation/cubit/register/register_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/forget_password/forgot_password_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/user_info/user_info_cubit.dart';
 
 // 🛍️ Product + Review + Category Feature
 import 'package:laza/features/home/domain/use_cases/get_product_by_id_usecase.dart';
@@ -76,12 +77,13 @@ void _setupAuth() {
   sl.registerLazySingleton(() => ForgotPasswordUseCase(sl()));
   sl.registerLazySingleton(() => VerifyOtpUseCase(sl()));
   sl.registerLazySingleton(() => ResetPasswordUseCase(sl()));
-  sl.registerLazySingleton(() => GetUserInfoUseCase(sl()));
+  sl.registerLazySingleton(() => GetUserInfoUsecase(sl()));
 
   // 5. Cubits
   sl.registerFactory(() => RegisterCubit(sl()));
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => ForgotPasswordCubit(sl(), sl(), sl()));
+  sl.registerFactory(() => UserInfoCubit(sl()));
 }
 
 void _setupProducts() {

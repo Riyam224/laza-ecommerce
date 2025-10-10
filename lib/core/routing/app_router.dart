@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/routes.dart';
 import 'package:laza/features/address/presentation/screen/address_screen.dart';
-import 'package:laza/features/auth/presentation/cubit/register_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/register/register_cubit.dart';
 import 'package:laza/features/auth/presentation/screens/forgot_password_screen.dart';
 import 'package:laza/features/auth/presentation/screens/login_options_screen.dart';
 import 'package:laza/features/auth/presentation/screens/login_screen.dart';

@@ -3,9 +3,12 @@ import 'package:laza/core/error/failure.dart';
 import 'package:laza/features/auth/domain/entities/user_entity.dart';
 import 'package:laza/features/auth/domain/repositories/auth_repository.dart';
 
-class GetUserInfoUseCase {
+class GetUserInfoUsecase {
   final AuthRepository repository;
-  GetUserInfoUseCase(this.repository);
 
-  Future<Either<Failure, UserEntity>> call() => repository.getUserInfo();
+  GetUserInfoUsecase(this.repository);
+
+  Future<Either<Failure, UserEntity>> call() async {
+    return await repository.getUserInfo();
+  }
 }

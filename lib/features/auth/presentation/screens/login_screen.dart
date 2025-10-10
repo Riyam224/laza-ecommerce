@@ -7,8 +7,8 @@ import 'package:laza/core/common_ui/widgets/custom_text_field.dart';
 import 'package:laza/core/di/di.dart';
 import 'package:laza/core/routing/routes.dart';
 import 'package:laza/core/utils/theming/app_colors.dart';
-import 'package:laza/features/auth/presentation/cubit/login_cubit.dart';
-import 'package:laza/features/auth/presentation/cubit/login_state.dart';
+import 'package:laza/features/auth/presentation/cubit/login/login_cubit.dart';
+import 'package:laza/features/auth/presentation/cubit/login/login_state.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
