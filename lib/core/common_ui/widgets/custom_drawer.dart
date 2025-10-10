@@ -350,7 +350,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
-  /// 🚨 Error message with Retry
+  ///  todo 🚨 Error message with Retry
   Widget _errorProfile(BuildContext context, String message) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
