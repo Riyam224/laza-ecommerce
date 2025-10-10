@@ -1352,6 +1352,47 @@ Flutter Developer | Mentorship Program Week 4
 
 For questions or issues, please open an issue in the repository.
 
+## 📝 Recent Updates
+
+### Latest Changes (January 2025)
+
+#### API Integration Fixes
+
+- **Cart Screen API Issues** - Fixed API connectivity and data handling issues in the cart screen
+  - Resolved endpoint communication errors
+  - Fixed request/response data parsing
+  - Improved error handling for cart operations
+
+- **API Integration Improvements** - General API fixes across the application
+  - Corrected API endpoint paths
+  - Fixed authentication token handling
+  - Improved error responses and user feedback
+
+- **Home & Details Screen Updates** - Updated API integration for home and product details screens
+  - Enhanced product data fetching
+  - Improved product details API calls
+  - Better error handling and loading states
+
+- **Code Cleanup** - Removed unnecessary comments and cleaned up codebase
+  - Improved code readability
+  - Removed debugging comments
+  - Better code organization
+
+- **API Testing** - Comprehensive testing of the updated API integration
+  - Verified all endpoints
+  - Tested authentication flows
+  - Validated cart operations
+
+### Recent Commits
+
+```bash
+f50b0e5  fix api issues in cart screen
+edd34c2  fix some issues related to api
+9012632  delete unHelpful comments
+dd287a7  updated code for home and details
+9db2302  test the updated api
+```
+
 ## 🙏 Acknowledgments
 
 - Flutter & Dart teams for the amazing framework
