@@ -26,7 +26,11 @@ A complete Flutter e-commerce application implementing authentication, product b
   - Email verification
   - 6-digit OTP validation
   - New password creation
-- **User Profile** - Get user information
+- **User Profile & Info Integration** - Comprehensive user information management:
+  - Retrieve authenticated user information from API
+  - Display user profile data (username, email, etc.)
+  - Persistent user session management
+  - Secure token-based authentication for user info requests
 
 ### Home & Products
 - **Product Catalog** - Browse all available products
@@ -608,6 +612,19 @@ This generates type-safe asset references in [lib/core/constants/assets.dart](li
 3. `RegisterUseCase` calls repository
 4. API returns authentication tokens
 5. Store tokens → Navigate to home
+
+### User Info Integration Flow
+
+1. **Authentication**: User logs in successfully
+2. **Token Storage**: Access token stored in SharedPreferences
+3. **Fetch User Info**: Call `GET /auth/user-info` endpoint with Bearer token
+4. **Data Processing**:
+   - `GetUserInfoUseCase` retrieves user data from repository
+   - `AuthRepositoryImpl` handles API communication
+   - User model (username, email, profile data) returned
+5. **State Management**: `UserInfoCubit` manages user info states
+6. **UI Display**: User information displayed across the app (drawer, profile screen, etc.)
+7. **Session Persistence**: User info cached locally for offline access
 
 ### Forgot Password Flow
 1. **Email Entry** → Send OTP
