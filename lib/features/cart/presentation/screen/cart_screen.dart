@@ -162,20 +162,30 @@ class _CartScreenState extends State<CartScreen> {
                               // 🖼 Product image
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
-                                child: Image.network(
-                                  item.productImage,
-                                  width: 80,
-                                  height: 100,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Container(
-                                      width: 80,
-                                      height: 100,
-                                      color: Colors.grey[200],
-                                      child: const Icon(Icons.image),
-                                    );
-                                  },
-                                ),
+                                child:
+                                    item.productImage.isNotEmpty &&
+                                        item.productImage.startsWith('http')
+                                    ? Image.network(
+                                        item.productImage,
+                                        width: 80,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) {
+                                              return Image.asset(
+                                                Assets.resourceImagesProduct,
+                                                width: 80,
+                                                height: 100,
+                                                fit: BoxFit.cover,
+                                              );
+                                            },
+                                      )
+                                    : Image.asset(
+                                        Assets.resourceImagesProduct,
+                                        width: 80,
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      ),
                               ),
                               const SizedBox(width: 12),
 
