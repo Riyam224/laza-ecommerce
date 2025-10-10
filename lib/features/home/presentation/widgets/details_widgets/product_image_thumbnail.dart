@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:laza/core/utils/theming/app_colors.dart';
+import 'package:laza/core/constants/assets.dart'; // ✅ Make sure this is imported for the fallback image
 
 class ImageThumbnails extends StatelessWidget {
   final List<String> images;
@@ -21,9 +22,12 @@ class ImageThumbnails extends StatelessWidget {
         height: 100,
         child: ListView.builder(
           scrollDirection: Axis.horizontal,
-          itemCount: images.length,
+          itemCount: images.isNotEmpty ? images.length : 1,
           itemBuilder: (context, index) {
             final isSelected = index == selectedIndex;
+            final imageUrl = images.isNotEmpty
+                ? images[index]
+                : Assets.resourceImagesProduct;
             return GestureDetector(
               onTap: () => onImageSelected(index),
               child: Container(
@@ -41,15 +45,17 @@ class ImageThumbnails extends StatelessWidget {
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.network(
-                    images[index],
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.broken_image,
-                      color: Colors.grey[400],
-                      size: 50,
-                    ),
-                  ),
+                  child: imageUrl.startsWith('http')
+                      ? Image.network(
+                          imageUrl,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) =>
+                              Image.asset(
+                                Assets.resourceImagesProduct,
+                                fit: BoxFit.cover,
+                              ),
+                        )
+                      : Image.asset(imageUrl, fit: BoxFit.cover),
                 ),
               ),
             );

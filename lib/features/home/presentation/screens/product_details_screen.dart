@@ -206,8 +206,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               price: product.price,
                             ),
                             const SizedBox(height: 20),
+                            // todo
                             ImageThumbnails(
-                              images: productImages,
+                              images: productImages.isNotEmpty
+                                  ? productImages
+                                  : [
+                                      Assets.resourceImagesProduct,
+                                    ], // your default asset path
                               selectedIndex: selectedImageIndex,
                               onImageSelected: (index) {
                                 setState(() {
