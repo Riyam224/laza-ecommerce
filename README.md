@@ -84,11 +84,11 @@ A complete Flutter e-commerce application implementing authentication, product b
   - Loading indicators during logout process
   - Navigation to various app sections
 - **Custom Widgets** - Reusable UI components:
-  - Custom text fields
-  - Elevated buttons
-  - Icon buttons with background
-  - Back button
-  - Search bar
+  - CustomTextField - Form input fields with validation
+  - BottomNavigationWidget - Bottom navigation bar
+  - CustomBackButton - Consistent back button with circular background
+  - CustomIconWithBg - Icon button with customizable background
+  - BottomActionButton - Fixed bottom action button
 - **Smooth Animations** - Enhanced user experience with animations:
   - Slide and fade transition from home to product details screen
   - Interactive cart item animations on tap
@@ -129,8 +129,6 @@ lib/
 ├── core/
 │   ├── common_ui/           # Reusable widgets
 │   │   └── widgets/
-│   │       ├── app_elevated_button.dart
-│   │       ├── app_text_field.dart
 │   │       ├── bottom_action_button.dart
 │   │       ├── bottom_navigation.dart
 │   │       ├── custom_back_button.dart
@@ -147,10 +145,9 @@ lib/
 │   │   ├── app_router.dart
 │   │   ├── routes.dart
 │   │   └── router_transitions.dart
-│   ├── theming/          # App theme
-│   │   ├── app_colors.dart
-│   │   └── app_themes.dart
 │   ├── utils/            # Utility classes
+│   │   └── theming/      # App theme
+│   │       └── app_colors.dart
 │   ├── di.dart           # Dependency injection
 │   └── shared_prefs.dart # Shared preferences helper
 │
@@ -585,17 +582,18 @@ dart run build_runner build --delete-conflicting-outputs
 ## 🎨 Theming & UI
 
 ### Color Palette
-- Primary colors defined in [app_colors.dart](lib/core/theming/app_colors.dart)
-- Theme configuration in [app_themes.dart](lib/core/theming/app_themes.dart)
+- Primary colors defined in [app_colors.dart](lib/core/utils/theming/app_colors.dart)
 
 ### Reusable Widgets
-- **AppElevatedButton** - Customizable elevated button
-- **AppTextField** / **CustomTextField** - Form input fields
-- **BottomNavWidget** - Bottom navigation bar
-- **CustomDrawer** - Side navigation drawer
-- **CustomBackButton** - Consistent back button
-- **CustomIconWithBg** - Icon with background container
-- **BottomActionButton** - Fixed bottom action button
+
+Located in [lib/core/common_ui/widgets/](lib/core/common_ui/widgets/):
+
+- **CustomTextField** ([custom_text_field.dart](lib/core/common_ui/widgets/custom_text_field.dart)) - Form input fields with label, validation, suffix icons, and customizable styling
+- **BottomNavWidget** ([bottom_navigation.dart](lib/core/common_ui/widgets/bottom_navigation.dart)) - Bottom navigation bar with 4 items (Home, Favorites, Shopping Bag, Wallet)
+- **CustomDrawer** ([custom_drawer.dart](lib/core/common_ui/widgets/custom_drawer.dart)) - Side navigation drawer with dynamic authentication UI, user profile display, and logout/login functionality
+- **CustomBackButton** ([custom_back_button.dart](lib/core/common_ui/widgets/custom_back_button.dart)) - Circular back button with customizable background and icon colors
+- **CustomIconWithBg** ([custom_icon_with_bg.dart](lib/core/common_ui/widgets/custom_icon_with_bg.dart)) - Icon button with circular background container for brand logos and social icons
+- **BottomActionButton** ([bottom_action_button.dart](lib/core/common_ui/widgets/bottom_action_button.dart)) - Fixed bottom action button spanning full width with customizable text and colors
 
 ### Assets
 Images stored in `assets/images/`:
