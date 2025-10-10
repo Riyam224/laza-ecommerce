@@ -189,96 +189,191 @@ class CategoryProductsPage extends StatelessWidget {
   }
 }
 
-// 🧱 Simple Product Card Widget
+// // 🧱 Simple Product Card Widget
+// class _ProductCard extends StatelessWidget {
+//   final ProductEntity product;
+//   const _ProductCard({required this.product});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     // 🧠 if API returns null or empty image → use fallback asset
+//     final String? imageUrl = product.coverPictureUrl;
+//     final bool hasValidImage = imageUrl != null && imageUrl.trim().isNotEmpty;
+
+//     return Container(
+//       decoration: BoxDecoration(
+//         borderRadius: BorderRadius.circular(16),
+//         color: Colors.white,
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.start,
+//         children: [
+//           // 🖼️ Product Image
+//           Stack(
+//             children: [
+//               ClipRRect(
+//                 borderRadius: BorderRadius.circular(16),
+//                 child: hasValidImage
+//                     ? Image.network(
+//                         imageUrl,
+//                         height: 170,
+//                         width: double.infinity,
+//                         fit: BoxFit.cover,
+//                         errorBuilder: (context, error, stackTrace) {
+//                           // If network image fails (404, etc.)
+//                           return Image.asset(
+//                             Assets.resourceImagesProduct,
+//                             height: 170,
+//                             width: double.infinity,
+//                             fit: BoxFit.cover,
+//                           );
+//                         },
+//                       )
+//                     : Image.asset(
+//                         Assets.resourceImagesProduct,
+//                         height: 170,
+//                         width: double.infinity,
+//                         fit: BoxFit.cover,
+//                       ),
+//               ),
+//               const Positioned(
+//                 top: 8,
+//                 right: 8,
+//                 child: CircleAvatar(
+//                   radius: 16,
+//                   backgroundColor: Colors.white,
+//                   child: Icon(Icons.favorite_border, size: 18),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           const SizedBox(height: 8),
+
+//           // 🏷️ Name
+//           GestureDetector(
+//             onTap: () {
+//               (context).push('/productDetails', extra: product.id);
+//             },
+//             child: Padding(
+//               padding: const EdgeInsets.symmetric(horizontal: 6),
+//               child: Text(
+//                 product.name,
+//                 style: const TextStyle(
+//                   fontSize: 14,
+//                   fontWeight: FontWeight.w500,
+//                 ),
+//                 maxLines: 1,
+//                 overflow: TextOverflow.ellipsis,
+//               ),
+//             ),
+//           ),
+
+//           const SizedBox(height: 4),
+
+//           // 💲 Price
+//           Padding(
+//             padding: const EdgeInsets.symmetric(horizontal: 6),
+//             child: Text(
+//               '\$${product.price.toStringAsFixed(2)}',
+//               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
+
 class _ProductCard extends StatelessWidget {
   final ProductEntity product;
-  const _ProductCard({required this.product});
+
+  const _ProductCard({super.key, required this.product});
 
   @override
   Widget build(BuildContext context) {
-    // 🧠 if API returns null or empty image → use fallback asset
-    final String? imageUrl = product.coverPictureUrl;
-    final bool hasValidImage = imageUrl != null && imageUrl.trim().isNotEmpty;
-
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: Colors.white,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // 🖼️ Product Image
-          Stack(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: hasValidImage
-                    ? Image.network(
-                        imageUrl,
-                        height: 170,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // If network image fails (404, etc.)
-                          return Image.asset(
-                            Assets.resourceImagesProduct,
-                            height: 170,
-                            width: double.infinity,
-                            fit: BoxFit.cover,
-                          );
-                        },
-                      )
-                    : Image.asset(
+    return GestureDetector(
+      onTap: () => context.push('/productDetails', extra: product.id),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 🖼️ Image section with fixed height
+            SizedBox(
+              height: 200,
+              width: double.infinity,
+              child: Stack(
+                children: [
+                  Container(
+                    color: AppColors.iconsBg.withOpacity(0.1),
+                    width: double.infinity,
+                    height: double.infinity,
+                    child: Image.network(
+                      product.coverPictureUrl,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                      errorBuilder: (context, error, stackTrace) => Image.asset(
                         Assets.resourceImagesProduct,
-                        height: 170,
-                        width: double.infinity,
                         fit: BoxFit.cover,
+                        alignment: Alignment.center,
                       ),
-              ),
-              const Positioned(
-                top: 8,
-                right: 8,
-                child: CircleAvatar(
-                  radius: 16,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.favorite_border, size: 18),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-
-          // 🏷️ Name
-          GestureDetector(
-            onTap: () {
-              (context).push('/productDetails', extra: product.id);
-            },
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 6),
-              child: Text(
-                product.name,
-                style: const TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: GestureDetector(
+                      onTap: () {},
+                      child: Container(
+                        width: 30,
+                        height: 30,
+                        decoration: BoxDecoration(
+                          color: Colors.white.withOpacity(0.9),
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(6),
+                        child: Image.asset(Assets.resourceImagesHeart),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
 
-          const SizedBox(height: 4),
-
-          // 💲 Price
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Text(
-              '\$${product.price.toStringAsFixed(2)}',
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            // 🏷️ Product name and price
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -121,7 +121,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               if (state is ProductDetailLoaded) {
                 final product = state.product;
 
-              
                 final List<String> productImages = List.filled(
                   4,
                   product.coverPictureUrl,
@@ -153,17 +152,24 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         ),
                                       ),
                                     ),
-                                    // todo image _____
-                                    child: Image.network(
-                                      product.coverPictureUrl,
-                                      fit: BoxFit.contain,
-                                      errorBuilder:
-                                          (context, error, stackTrace) {
-                                            return Image.asset(
-                                              Assets.resourceImagesProduct,
-                                              fit: BoxFit.contain,
-                                            );
-                                          },
+
+                                    child: AspectRatio(
+                                      aspectRatio:
+                                          1, // makes image section square relative to screen width
+                                      child: Image.network(
+                                        product.coverPictureUrl,
+                                        fit: BoxFit
+                                            .contain, // shows the full image (no crop)
+                                        width: double
+                                            .infinity, // take full width of the screen
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Image.asset(
+                                                  Assets.resourceImagesProduct,
+                                                  fit: BoxFit.contain,
+                                                  width: double.infinity,
+                                                ),
+                                      ),
                                     ),
                                   ),
                                 ),
