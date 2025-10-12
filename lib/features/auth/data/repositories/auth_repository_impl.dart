@@ -28,66 +28,96 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<Failure, RegisterResponseEntity>> register(RegisterRequestModel request) async {
+  Future<Either<Failure, RegisterResponseEntity>> register(
+    RegisterRequestModel request,
+  ) async {
     try {
       final response = await api.register(request);
-      return Right(RegisterResponseEntity(
-        message: response.message ?? 'Registration successful, but no message provided.',
-      ));
+      return Right(
+        RegisterResponseEntity(
+          message:
+              response.message ??
+              'Registration successful, but no message provided.',
+        ),
+      );
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Registration failed')));
+      return Left(
+        ServerFailure(message: _extractErrorMessage(e, 'Registration failed')),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, LoginResponseEntity>> login(LoginRequestEntity request) async {
+  Future<Either<Failure, LoginResponseEntity>> login(
+    LoginRequestEntity request,
+  ) async {
     try {
       final requestModel = LoginRequestModel.fromEntity(request);
       final response = await api.login(requestModel);
       return Right(response.toEntity());
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Login failed')));
+      return Left(
+        ServerFailure(message: _extractErrorMessage(e, 'Login failed')),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> forgotPassword(ForgotPasswordRequestEntity request) async {
+  Future<Either<Failure, void>> forgotPassword(
+    ForgotPasswordRequestEntity request,
+  ) async {
     try {
       final requestModel = ForgotPasswordRequestModel.fromEntity(request);
       await api.forgotPassword(requestModel.toJson());
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Forgot password failed')));
+      return Left(
+        ServerFailure(
+          message: _extractErrorMessage(e, 'Password reset failed'),
+        ),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> verifyOtp(VerifyOtpRequestEntity request) async {
+  Future<Either<Failure, void>> verifyOtp(
+    VerifyOtpRequestEntity request,
+  ) async {
     try {
       final requestModel = VerifyOtpRequestModel.fromEntity(request);
       await api.verifyOtp(requestModel.toJson());
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'OTP verification failed')));
+      return Left(
+        ServerFailure(
+          message: _extractErrorMessage(e, 'OTP verification failed'),
+        ),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> resetPassword(ResetPasswordRequestEntity request) async {
+  Future<Either<Failure, void>> resetPassword(
+    ResetPasswordRequestEntity request,
+  ) async {
     try {
       final requestModel = ResetPasswordRequestModel.fromEntity(request);
       await api.resetPassword(requestModel.toJson());
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Password reset failed')));
+      return Left(
+        ServerFailure(
+          message: _extractErrorMessage(e, 'Password reset failed'),
+        ),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -99,7 +129,11 @@ class AuthRepositoryImpl implements AuthRepository {
       final user = await api.getUserInfo();
       return Right(user.toEntity());
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Failed to fetch user info')));
+      return Left(
+        ServerFailure(
+          message: _extractErrorMessage(e, 'Failed to fetch user info'),
+        ),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
@@ -111,7 +145,9 @@ class AuthRepositoryImpl implements AuthRepository {
       await api.logout();
       return const Right(null);
     } on DioException catch (e) {
-      return Left(ServerFailure(message: _extractErrorMessage(e, 'Logout failed')));
+      return Left(
+        ServerFailure(message: _extractErrorMessage(e, 'Logout failed')),
+      );
     } catch (e) {
       return Left(ServerFailure(message: e.toString()));
     }
